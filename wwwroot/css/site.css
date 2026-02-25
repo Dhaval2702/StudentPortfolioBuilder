@@ -1,0 +1,47 @@
+:root {
+    --primary-start: #2563eb;
+    --primary-end: #8b5cf6;
+    --page-bg: #f8fafc;
+    --text-dark: #0f172a;
+}
+
+body {
+    background: linear-gradient(120deg, #eff6ff 0%, #f5f3ff 40%, #ecfeff 100%);
+    color: var(--text-dark);
+    min-height: 100vh;
+}
+
+header {
+    background: linear-gradient(90deg, var(--primary-start), var(--primary-end));
+}
+
+.hero-section {
+    background: rgba(255, 255, 255, 0.88);
+    border: 1px solid #e2e8f0;
+}
+
+.btn-gradient {
+    border: none;
+    color: #fff;
+    background: linear-gradient(90deg, var(--primary-start), var(--primary-end));
+}
+
+.btn-gradient:hover {
+    opacity: 0.92;
+    color: #fff;
+}
+
+.portfolio-card img {
+    height: 190px;
+    object-fit: cover;
+}
+
+.footer {
+    background-color: rgba(15, 23, 42, 0.08);
+}
+
+@media (max-width: 576px) {
+    .portfolio-card img {
+        height: 160px;
+    }
+}
