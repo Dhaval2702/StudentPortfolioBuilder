@@ -1,106 +1,120 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.EntityFrameworkCore;
+using StudentPortfolioBuilder.Data;
 using StudentPortfolioBuilder.Models;
+using StudentPortfolioBuilder.ViewModels;
 
 namespace StudentPortfolioBuilder.Controllers;
 
-public class HomeController : Controller
+public class HomeController(ApplicationDbContext db) : Controller
 {
-    private static readonly List<StudentProfile> Profiles = new();
+    [HttpGet]
+    public async Task<IActionResult> Index([FromQuery] ProfileFilterViewModel filters)
+    {
+        var query = db.StudentProfiles.AsQueryable();
 
-    private static readonly List<string> FieldsOfStudy =
-    [
-        "Computer Science",
-        "Information Technology",
-        "Electrical Engineering",
-        "Mechanical Engineering",
-        "Civil Engineering",
-        "Electronics & Communication",
-        "Data Science",
-        "Business Administration",
-        "Commerce",
-        "Biotechnology"
-    ];
+        if (!string.IsNullOrWhiteSpace(filters.Name))
+        {
+            query = query.Where(x => x.Name.Contains(filters.Name));
+        }
 
-    private static readonly List<string> JobRoles =
-    [
-        "Python Developer",
-        "C# Developer",
-        "Java Developer",
-        "Front-End Developer",
-        "Full Stack Developer",
-        "Data Analyst",
-        "Machine Learning Engineer",
-        "Cloud Engineer",
-        "DevOps Engineer",
-        "UI/UX Designer",
-        "Electrical Design Engineer",
-        "Mechanical Design Engineer",
-        "Site Engineer",
-        "Quality Assurance Engineer",
-        "Business Analyst"
-    ];
+        if (!string.IsNullOrWhiteSpace(filters.CollegeName))
+        {
+            query = query.Where(x => x.CollegeName.Contains(filters.CollegeName));
+        }
+
+        if (!string.IsNullOrWhiteSpace(filters.FieldOfStudy))
+        {
+            query = query.Where(x => x.FieldOfStudy == filters.FieldOfStudy);
+        }
+
+        if (!string.IsNullOrWhiteSpace(filters.JobRole))
+        {
+            query = query.Where(x => x.JobRole == filters.JobRole);
+        }
+
+        if (filters.OnlyWithVideo)
+        {
+            query = query.Where(x => x.VideoPath != null && x.VideoPath != "");
+        }
+
+        if (filters.OnlyWithCertifications)
+        {
+            query = query.Where(x => x.CertificationsPath != null && x.CertificationsPath != "");
+        }
+
+        var model = new HomePageViewModel
+        {
+            Filters = filters,
+            Profiles = await query.OrderByDescending(x => x.CreatedOn).Take(200).ToListAsync(),
+            FieldsOfStudy = BuildOptions(HomeLookup.FieldsOfStudy),
+            JobRoles = BuildOptions(HomeLookup.JobRoles)
+        };
+
+        return View(model);
+    }
 
     [HttpGet]
-    public IActionResult Index()
+    public IActionResult Register()
     {
-        var model = BuildViewModel();
-        return View(model);
+        return View(new RegistrationViewModel
+        {
+            FieldsOfStudyOptions = BuildOptions(HomeLookup.FieldsOfStudy),
+            JobRolesOptions = BuildOptions(HomeLookup.JobRoles)
+        });
     }
 
     [HttpPost]
     [ValidateAntiForgeryToken]
-    public async Task<IActionResult> Index(HomePageViewModel model)
+    public async Task<IActionResult> Register(RegistrationViewModel model)
     {
-        PopulateDropdowns(model);
+        model.FieldsOfStudyOptions = BuildOptions(HomeLookup.FieldsOfStudy);
+        model.JobRolesOptions = BuildOptions(HomeLookup.JobRoles);
 
         if (!ModelState.IsValid)
         {
-            model.Profiles = Profiles.OrderByDescending(p => p.CreatedOn).ToList();
             return View(model);
         }
 
         var profile = new StudentProfile
         {
-            Name = model.Input.Name,
-            Address = model.Input.Address,
-            CollegeName = model.Input.CollegeName,
-            FieldOfStudy = model.Input.FieldOfStudy,
-            JobRole = model.Input.JobRole,
-            ImagePath = await SaveFile(model.Input.Image, "images"),
-            DegreeCertificatePath = await SaveFile(model.Input.DegreeCertificate, "documents"),
-            MarksheetPath = await SaveFile(model.Input.Marksheet, "documents"),
-            CertificationsPath = await SaveFile(model.Input.Certifications, "documents"),
-            VideoPath = await SaveFile(model.Input.Video, "videos")
+            Name = model.Name,
+            Email = model.Email,
+            Address = model.Address,
+            CollegeName = model.CollegeName,
+            FieldOfStudy = model.FieldOfStudy,
+            JobRole = model.JobRole,
+            ImagePath = await SaveFile(model.Image, "images") ?? "/images/default-avatar.svg",
+            DegreeCertificatePath = await SaveFile(model.DegreeCertificate, "documents"),
+            MarksheetPath = await SaveFile(model.Marksheet, "documents"),
+            CertificationsPath = await SaveFile(model.Certifications, "documents"),
+            VideoPath = await SaveFile(model.Video, "videos")
         };
 
-        Profiles.Add(profile);
+        db.StudentProfiles.Add(profile);
+        await db.SaveChangesAsync();
 
-        TempData["SuccessMessage"] = "Portfolio created successfully!";
+        TempData["SuccessMessage"] = "Registration completed and profile highlighted on landing page.";
         return RedirectToAction(nameof(Index));
     }
 
-    private HomePageViewModel BuildViewModel()
+    [HttpGet]
+    public IActionResult Login()
     {
-        var vm = new HomePageViewModel
-        {
-            Profiles = Profiles.OrderByDescending(p => p.CreatedOn).ToList()
-        };
-
-        PopulateDropdowns(vm);
-        return vm;
+        TempData["InfoMessage"] = "Login flow UI placeholder added. Integrate ASP.NET Identity for full auth.";
+        return RedirectToAction(nameof(Index));
     }
 
-    private static void PopulateDropdowns(HomePageViewModel model)
+    [HttpGet]
+    public IActionResult GoogleLogin()
     {
-        model.FieldsOfStudy = FieldsOfStudy
-            .Select(x => new SelectListItem(x, x))
-            .ToList();
-
-        model.JobRoles = JobRoles
-            .Select(x => new SelectListItem(x, x))
-            .ToList();
+        TempData["InfoMessage"] = "Google login button is added in UI. OAuth integration can be enabled next.";
+        return RedirectToAction(nameof(Index));
     }
+
+    private static List<SelectListItem> BuildOptions(IEnumerable<string> source) =>
+        source.Select(x => new SelectListItem(x, x)).ToList();
 
     private async Task<string?> SaveFile(IFormFile? file, string category)
     {

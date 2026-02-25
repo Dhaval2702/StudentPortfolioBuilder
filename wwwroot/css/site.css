@@ -1,12 +1,12 @@
 :root {
-    --primary-start: #2563eb;
-    --primary-end: #8b5cf6;
-    --page-bg: #f8fafc;
+    --primary-start: #0f766e;
+    --primary-end: #7c3aed;
+    --accent: #f97316;
     --text-dark: #0f172a;
 }
 
 body {
-    background: linear-gradient(120deg, #eff6ff 0%, #f5f3ff 40%, #ecfeff 100%);
+    background: linear-gradient(120deg, #ecfeff 0%, #f0fdf4 35%, #fef3c7 100%);
     color: var(--text-dark);
     min-height: 100vh;
 }
@@ -16,8 +16,8 @@ header {
 }
 
 .hero-section {
-    background: rgba(255, 255, 255, 0.88);
-    border: 1px solid #e2e8f0;
+    background: rgba(255, 255, 255, 0.92);
+    border: 1px solid #dbeafe;
 }
 
 .btn-gradient {
@@ -27,13 +27,26 @@ header {
 }
 
 .btn-gradient:hover {
-    opacity: 0.92;
+    opacity: 0.93;
     color: #fff;
 }
 
 .portfolio-card img {
-    height: 190px;
+    height: 180px;
     object-fit: cover;
+}
+
+.profile-highlight {
+    border: 2px solid #f59e0b !important;
+    box-shadow: 0 8px 20px rgba(245, 158, 11, 0.25) !important;
+}
+
+.video-badge {
+    background: #dc2626;
+}
+
+.cert-badge {
+    background: #16a34a;
 }
 
 .footer {
@@ -42,6 +55,6 @@ header {
 
 @media (max-width: 576px) {
     .portfolio-card img {
-        height: 160px;
+        height: 150px;
     }
 }

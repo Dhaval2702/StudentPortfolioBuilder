@@ -1,0 +1,83 @@
+@model RegistrationViewModel
+@{
+    ViewData["Title"] = "Register";
+}
+
+<section class="hero-section rounded-4 p-4 mb-4">
+    <h1 class="h3 fw-bold mb-1">Create Portfolio Registration</h1>
+    <p class="mb-0">Complete details once, and your profile will appear on landing highlights.</p>
+</section>
+
+<div class="card shadow-lg border-0 rounded-4">
+    <div class="card-body p-4">
+        <form asp-action="Register" method="post" enctype="multipart/form-data" class="row g-3">
+            @Html.AntiForgeryToken()
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+            <div class="col-md-6">
+                <label asp-for="Name" class="form-label"></label>
+                <input asp-for="Name" class="form-control" />
+                <span asp-validation-for="Name" class="text-danger"></span>
+            </div>
+            <div class="col-md-6">
+                <label asp-for="Email" class="form-label"></label>
+                <input asp-for="Email" class="form-control" />
+                <span asp-validation-for="Email" class="text-danger"></span>
+            </div>
+            <div class="col-12">
+                <label asp-for="Address" class="form-label"></label>
+                <textarea asp-for="Address" class="form-control" rows="2"></textarea>
+                <span asp-validation-for="Address" class="text-danger"></span>
+            </div>
+            <div class="col-md-6">
+                <label asp-for="CollegeName" class="form-label"></label>
+                <input asp-for="CollegeName" class="form-control" />
+                <span asp-validation-for="CollegeName" class="text-danger"></span>
+            </div>
+            <div class="col-md-6">
+                <label asp-for="FieldOfStudy" class="form-label"></label>
+                <select asp-for="FieldOfStudy" asp-items="Model.FieldsOfStudyOptions" class="form-select">
+                    <option value="">Choose field</option>
+                </select>
+                <span asp-validation-for="FieldOfStudy" class="text-danger"></span>
+            </div>
+            <div class="col-md-6">
+                <label asp-for="JobRole" class="form-label"></label>
+                <select asp-for="JobRole" asp-items="Model.JobRolesOptions" class="form-select">
+                    <option value="">Choose job role</option>
+                </select>
+                <span asp-validation-for="JobRole" class="text-danger"></span>
+            </div>
+            <div class="col-md-6">
+                <label asp-for="Image" class="form-label"></label>
+                <input asp-for="Image" class="form-control" type="file" accept="image/*" />
+                <span asp-validation-for="Image" class="text-danger"></span>
+            </div>
+            <div class="col-md-4">
+                <label asp-for="DegreeCertificate" class="form-label"></label>
+                <input asp-for="DegreeCertificate" class="form-control" type="file" accept=".pdf,.doc,.docx,image/*" />
+                <span asp-validation-for="DegreeCertificate" class="text-danger"></span>
+            </div>
+            <div class="col-md-4">
+                <label asp-for="Marksheet" class="form-label"></label>
+                <input asp-for="Marksheet" class="form-control" type="file" accept=".pdf,.doc,.docx,image/*" />
+                <span asp-validation-for="Marksheet" class="text-danger"></span>
+            </div>
+            <div class="col-md-4">
+                <label asp-for="Certifications" class="form-label"></label>
+                <input asp-for="Certifications" class="form-control" type="file" accept=".pdf,.doc,.docx,image/*" />
+                <span asp-validation-for="Certifications" class="text-danger"></span>
+            </div>
+            <div class="col-12">
+                <label asp-for="Video" class="form-label"></label>
+                <input asp-for="Video" class="form-control" type="file" accept="video/*" />
+                <span asp-validation-for="Video" class="text-danger"></span>
+            </div>
+
+            <div class="col-12 d-flex gap-2">
+                <button type="submit" class="btn btn-gradient px-4">Submit Registration</button>
+                <a asp-action="Index" class="btn btn-outline-secondary px-4">Back to Home</a>
+            </div>
+        </form>
+    </div>
+</div>

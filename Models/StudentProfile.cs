@@ -4,41 +4,40 @@ namespace StudentPortfolioBuilder.Models;
 
 public class StudentProfile
 {
-    public Guid Id { get; set; } = Guid.NewGuid();
+    public int Id { get; set; }
 
     [Required]
-    [Display(Name = "Full Name")]
+    [MaxLength(120)]
     public string Name { get; set; } = string.Empty;
 
     [Required]
+    [MaxLength(250)]
     public string Address { get; set; } = string.Empty;
 
     [Required]
-    [Display(Name = "College Name")]
+    [MaxLength(150)]
     public string CollegeName { get; set; } = string.Empty;
 
     [Required]
-    [Display(Name = "Field of Study")]
+    [MaxLength(100)]
     public string FieldOfStudy { get; set; } = string.Empty;
 
     [Required]
-    [Display(Name = "Preferred Job Role")]
+    [MaxLength(100)]
     public string JobRole { get; set; } = string.Empty;
 
-    [Display(Name = "Profile Image")]
     public string? ImagePath { get; set; }
-
-    [Display(Name = "Degree Certificate")]
     public string? DegreeCertificatePath { get; set; }
-
-    [Display(Name = "Marksheet")]
     public string? MarksheetPath { get; set; }
-
-    [Display(Name = "Certifications")]
     public string? CertificationsPath { get; set; }
-
-    [Display(Name = "Video Introduction")]
     public string? VideoPath { get; set; }
 
+    [EmailAddress]
+    [MaxLength(180)]
+    public string? Email { get; set; }
+
     public DateTime CreatedOn { get; set; } = DateTime.UtcNow;
+
+    public bool HasVideo => !string.IsNullOrWhiteSpace(VideoPath);
+    public bool HasCertifications => !string.IsNullOrWhiteSpace(CertificationsPath);
 }

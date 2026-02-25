@@ -1,21 +1,17 @@
 using System.ComponentModel.DataAnnotations;
 using Microsoft.AspNetCore.Mvc.Rendering;
 
-namespace StudentPortfolioBuilder.Models;
+namespace StudentPortfolioBuilder.ViewModels;
 
-public class HomePageViewModel
-{
-    public StudentProfileInput Input { get; set; } = new();
-    public List<StudentProfile> Profiles { get; set; } = new();
-    public List<SelectListItem> FieldsOfStudy { get; set; } = new();
-    public List<SelectListItem> JobRoles { get; set; } = new();
-}
-
-public class StudentProfileInput
+public class RegistrationViewModel
 {
     [Required]
     [Display(Name = "Full Name")]
     public string Name { get; set; } = string.Empty;
+
+    [Required]
+    [EmailAddress]
+    public string Email { get; set; } = string.Empty;
 
     [Required]
     public string Address { get; set; } = string.Empty;
@@ -48,4 +44,7 @@ public class StudentProfileInput
 
     [Display(Name = "Video Introduction (Optional)")]
     public IFormFile? Video { get; set; }
+
+    public List<SelectListItem> FieldsOfStudyOptions { get; set; } = new();
+    public List<SelectListItem> JobRolesOptions { get; set; } = new();
 }

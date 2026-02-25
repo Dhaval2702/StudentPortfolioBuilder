@@ -1,139 +1,108 @@
 @model HomePageViewModel
 @{
-    ViewData["Title"] = "Build Your Portfolio";
+    ViewData["Title"] = "Home";
 }
 
-<section class="hero-section text-center p-4 p-md-5 rounded-4 mb-4">
-    <h1 class="display-5 fw-bold">Create Your Fresher Portfolio</h1>
-    <p class="lead mb-0">Showcase your education, documents, and job interests in one professional profile.</p>
+<section class="hero-section rounded-4 p-4 mb-4">
+    <h1 class="h2 fw-bold mb-1">Discover Fresher Portfolios</h1>
+    <p class="mb-0">Use search filters to find candidates by field, role, college, and highlight media.</p>
 </section>
 
-@if (TempData["SuccessMessage"] is string message)
+@if (TempData["SuccessMessage"] is string success)
 {
-    <div class="alert alert-success">@message</div>
+    <div class="alert alert-success">@success</div>
+}
+@if (TempData["InfoMessage"] is string info)
+{
+    <div class="alert alert-info">@info</div>
 }
 
-<div class="row g-4">
-    <div class="col-lg-5">
-        <div class="card shadow-lg border-0 rounded-4">
-            <div class="card-body p-4">
-                <h2 class="h4 mb-3">Student Registration</h2>
-                <form asp-action="Index" method="post" enctype="multipart/form-data">
-                    @Html.AntiForgeryToken()
-
-                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-
-                    <div class="mb-3">
-                        <label asp-for="Input.Name" class="form-label"></label>
-                        <input asp-for="Input.Name" class="form-control" />
-                        <span asp-validation-for="Input.Name" class="text-danger"></span>
-                    </div>
-
-                    <div class="mb-3">
-                        <label asp-for="Input.Address" class="form-label"></label>
-                        <textarea asp-for="Input.Address" class="form-control" rows="2"></textarea>
-                        <span asp-validation-for="Input.Address" class="text-danger"></span>
-                    </div>
-
-                    <div class="mb-3">
-                        <label asp-for="Input.CollegeName" class="form-label"></label>
-                        <input asp-for="Input.CollegeName" class="form-control" />
-                        <span asp-validation-for="Input.CollegeName" class="text-danger"></span>
-                    </div>
-
-                    <div class="mb-3">
-                        <label asp-for="Input.FieldOfStudy" class="form-label"></label>
-                        <select asp-for="Input.FieldOfStudy" asp-items="Model.FieldsOfStudy" class="form-select">
-                            <option value="">Choose field</option>
-                        </select>
-                        <span asp-validation-for="Input.FieldOfStudy" class="text-danger"></span>
-                    </div>
-
-                    <div class="mb-3">
-                        <label asp-for="Input.JobRole" class="form-label"></label>
-                        <select asp-for="Input.JobRole" asp-items="Model.JobRoles" class="form-select">
-                            <option value="">Choose job role</option>
-                        </select>
-                        <span asp-validation-for="Input.JobRole" class="text-danger"></span>
-                    </div>
-
-                    <div class="mb-3">
-                        <label asp-for="Input.Image" class="form-label"></label>
-                        <input asp-for="Input.Image" class="form-control" type="file" accept="image/*" />
-                        <span asp-validation-for="Input.Image" class="text-danger"></span>
-                    </div>
-
-                    <div class="mb-3">
-                        <label asp-for="Input.DegreeCertificate" class="form-label"></label>
-                        <input asp-for="Input.DegreeCertificate" class="form-control" type="file" accept=".pdf,.doc,.docx,image/*" />
-                        <span asp-validation-for="Input.DegreeCertificate" class="text-danger"></span>
-                    </div>
-
-                    <div class="mb-3">
-                        <label asp-for="Input.Marksheet" class="form-label"></label>
-                        <input asp-for="Input.Marksheet" class="form-control" type="file" accept=".pdf,.doc,.docx,image/*" />
-                        <span asp-validation-for="Input.Marksheet" class="text-danger"></span>
-                    </div>
-
-                    <div class="mb-3">
-                        <label asp-for="Input.Certifications" class="form-label"></label>
-                        <input asp-for="Input.Certifications" class="form-control" type="file" accept=".pdf,.doc,.docx,image/*" />
-                        <span asp-validation-for="Input.Certifications" class="text-danger"></span>
-                    </div>
-
-                    <div class="mb-3">
-                        <label asp-for="Input.Video" class="form-label"></label>
-                        <input asp-for="Input.Video" class="form-control" type="file" accept="video/*" />
-                        <span asp-validation-for="Input.Video" class="text-danger"></span>
-                    </div>
-
-                    <button type="submit" class="btn btn-gradient w-100 py-2 fw-semibold">Create Portfolio</button>
-                </form>
+<div class="card border-0 shadow-sm rounded-4 mb-4">
+    <div class="card-body">
+        <form method="get" asp-action="Index" class="row g-3 align-items-end">
+            <div class="col-md-3">
+                <label class="form-label">Name</label>
+                <input asp-for="Filters.Name" class="form-control" placeholder="Search by name" />
             </div>
-        </div>
+            <div class="col-md-3">
+                <label class="form-label">College</label>
+                <input asp-for="Filters.CollegeName" class="form-control" placeholder="Search by college" />
+            </div>
+            <div class="col-md-3">
+                <label class="form-label">Field of Study</label>
+                <select asp-for="Filters.FieldOfStudy" asp-items="Model.FieldsOfStudy" class="form-select">
+                    <option value="">All fields</option>
+                </select>
+            </div>
+            <div class="col-md-3">
+                <label class="form-label">Preferred Role</label>
+                <select asp-for="Filters.JobRole" asp-items="Model.JobRoles" class="form-select">
+                    <option value="">All roles</option>
+                </select>
+            </div>
+            <div class="col-md-3">
+                <div class="form-check mt-2">
+                    <input class="form-check-input" asp-for="Filters.OnlyWithVideo" />
+                    <label class="form-check-label" asp-for="Filters.OnlyWithVideo">Only profiles with video</label>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="form-check mt-2">
+                    <input class="form-check-input" asp-for="Filters.OnlyWithCertifications" />
+                    <label class="form-check-label" asp-for="Filters.OnlyWithCertifications">Only profiles with certifications</label>
+                </div>
+            </div>
+            <div class="col-md-6 text-md-end">
+                <button class="btn btn-gradient px-4" type="submit">Apply Filters</button>
+                <a asp-action="Index" class="btn btn-outline-secondary px-4">Reset</a>
+            </div>
+        </form>
     </div>
+</div>
 
-    <div class="col-lg-7">
-        <div class="d-flex justify-content-between align-items-center mb-3">
-            <h2 class="h4 mb-0">Highlighted Freshers</h2>
-            <span class="badge text-bg-primary">@Model.Profiles.Count Profiles</span>
-        </div>
+<div class="d-flex justify-content-between align-items-center mb-3">
+    <h2 class="h4 mb-0">Profiles</h2>
+    <span class="badge text-bg-primary">Showing @Model.Profiles.Count</span>
+</div>
 
-        @if (!Model.Profiles.Any())
-        {
-            <div class="card border-0 shadow-sm rounded-4 p-4 text-center text-muted">
-                No student portfolios yet. Create your profile to get featured here.
-            </div>
-        }
-        else
-        {
-            <div class="row g-3">
-                @foreach (var profile in Model.Profiles)
-                {
-                    <div class="col-md-6">
-                        <div class="card portfolio-card h-100 border-0 shadow-sm rounded-4">
-                            <img src="@(profile.ImagePath ?? "/images/default-avatar.svg")" class="card-img-top rounded-top-4" alt="@profile.Name" />
-                            <div class="card-body">
-                                <h3 class="h5">@profile.Name</h3>
-                                <p class="small text-muted mb-1"><strong>College:</strong> @profile.CollegeName</p>
-                                <p class="small text-muted mb-1"><strong>Field:</strong> @profile.FieldOfStudy</p>
-                                <p class="small text-muted mb-3"><strong>Role:</strong> @profile.JobRole</p>
-                                <p class="small mb-3">@profile.Address</p>
-
-                                <div class="d-flex flex-wrap gap-2">
-                                    <a class="btn btn-sm btn-outline-primary" href="@profile.DegreeCertificatePath" target="_blank">Degree</a>
-                                    <a class="btn btn-sm btn-outline-primary" href="@profile.MarksheetPath" target="_blank">Marksheet</a>
-                                    <a class="btn btn-sm btn-outline-primary" href="@profile.CertificationsPath" target="_blank">Certifications</a>
-                                    @if (!string.IsNullOrWhiteSpace(profile.VideoPath))
-                                    {
-                                        <a class="btn btn-sm btn-outline-success" href="@profile.VideoPath" target="_blank">Video Intro</a>
-                                    }
-                                </div>
-                            </div>
+<div class="row g-3">
+    @foreach (var profile in Model.Profiles)
+    {
+        <div class="col-md-6 col-xl-4">
+            <div class="card portfolio-card h-100 border-0 shadow-sm rounded-4 @(profile.HasVideo || profile.HasCertifications ? "profile-highlight" : "")">
+                <img src="@(profile.ImagePath ?? "/images/default-avatar.svg")" class="card-img-top rounded-top-4" alt="@profile.Name" />
+                <div class="card-body">
+                    <div class="d-flex justify-content-between align-items-start mb-2">
+                        <h3 class="h5 mb-0">@profile.Name</h3>
+                        <div class="d-flex gap-1 flex-wrap justify-content-end">
+                            @if (profile.HasVideo)
+                            {
+                                <span class="badge video-badge">Video</span>
+                            }
+                            @if (profile.HasCertifications)
+                            {
+                                <span class="badge cert-badge">Certified</span>
+                            }
                         </div>
                     </div>
-                }
+                    <p class="small text-muted mb-1"><strong>College:</strong> @profile.CollegeName</p>
+                    <p class="small text-muted mb-1"><strong>Field:</strong> @profile.FieldOfStudy</p>
+                    <p class="small text-muted mb-3"><strong>Role:</strong> @profile.JobRole</p>
+                    <p class="small mb-3">@profile.Address</p>
+                    <div class="d-flex flex-wrap gap-2">
+                        <a class="btn btn-sm btn-outline-primary" href="@profile.DegreeCertificatePath" target="_blank">Degree</a>
+                        <a class="btn btn-sm btn-outline-primary" href="@profile.MarksheetPath" target="_blank">Marksheet</a>
+                        @if (profile.HasCertifications)
+                        {
+                            <a class="btn btn-sm btn-outline-success" href="@profile.CertificationsPath" target="_blank">Certifications</a>
+                        }
+                        @if (profile.HasVideo)
+                        {
+                            <a class="btn btn-sm btn-outline-danger" href="@profile.VideoPath" target="_blank">Video Intro</a>
+                        }
+                    </div>
+                </div>
             </div>
-        }
-    </div>
+        </div>
+    }
 </div>
