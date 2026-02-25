@@ -10,9 +10,14 @@ namespace StudentPortfolioBuilder.Controllers;
 public class HomeController(ApplicationDbContext db) : Controller
 {
     [HttpGet]
-    public async Task<IActionResult> Index([FromQuery] ProfileFilterViewModel filters)
+    public async Task<IActionResult> Index([FromQuery] ProfileFilterViewModel filters, int page = 1, int pageSize = 12)
     {
-        var query = db.StudentProfiles.AsQueryable();
+        if (page < 1)
+        {
+            page = 1;
+        }
+
+        var query = db.StudentProfiles.AsNoTracking().AsQueryable();
 
         if (!string.IsNullOrWhiteSpace(filters.Name))
         {
@@ -36,20 +41,30 @@ public class HomeController(ApplicationDbContext db) : Controller
 
         if (filters.OnlyWithVideo)
         {
-            query = query.Where(x => x.VideoPath != null && x.VideoPath != "");
+            query = query.Where(x => !string.IsNullOrEmpty(x.VideoPath));
         }
 
         if (filters.OnlyWithCertifications)
         {
-            query = query.Where(x => x.CertificationsPath != null && x.CertificationsPath != "");
+            query = query.Where(x => !string.IsNullOrEmpty(x.CertificationsPath));
         }
+
+        var totalCount = await query.CountAsync();
+        var profiles = await query
+            .OrderByDescending(x => x.CreatedOn)
+            .Skip((page - 1) * pageSize)
+            .Take(pageSize)
+            .ToListAsync();
 
         var model = new HomePageViewModel
         {
             Filters = filters,
-            Profiles = await query.OrderByDescending(x => x.CreatedOn).Take(200).ToListAsync(),
+            Profiles = profiles,
             FieldsOfStudy = BuildOptions(HomeLookup.FieldsOfStudy),
-            JobRoles = BuildOptions(HomeLookup.JobRoles)
+            JobRoles = BuildOptions(HomeLookup.JobRoles),
+            CurrentPage = page,
+            PageSize = pageSize,
+            TotalCount = totalCount
         };
 
         return View(model);
@@ -111,6 +126,18 @@ public class HomeController(ApplicationDbContext db) : Controller
     {
         TempData["InfoMessage"] = "Google login button is added in UI. OAuth integration can be enabled next.";
         return RedirectToAction(nameof(Index));
+    }
+
+    [HttpGet]
+    public IActionResult Privacy()
+    {
+        return View();
+    }
+
+    [HttpGet]
+    public IActionResult Contact()
+    {
+        return View();
     }
 
     private static List<SelectListItem> BuildOptions(IEnumerable<string> source) =>

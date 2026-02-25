@@ -9,16 +9,19 @@
 </head>
 <body>
 <header class="shadow-sm sticky-top">
-    <nav class="navbar navbar-expand-lg navbar-dark container py-3">
+    <nav class="navbar navbar-expand-lg navbar-dark container py-2">
         <a class="navbar-brand fw-bold" asp-controller="Home" asp-action="Index">Freshers Portfolio Hub</a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mainNav">
             <span class="navbar-toggler-icon"></span>
         </button>
         <div id="mainNav" class="collapse navbar-collapse">
-            <ul class="navbar-nav ms-auto gap-2">
-                <li class="nav-item"><a class="btn btn-light btn-sm" asp-controller="Home" asp-action="Register">Register</a></li>
-                <li class="nav-item"><a class="btn btn-outline-light btn-sm" asp-controller="Home" asp-action="Login">Login</a></li>
-                <li class="nav-item"><a class="btn btn-warning btn-sm fw-semibold" asp-controller="Home" asp-action="GoogleLogin">Login with Gmail</a></li>
+            <ul class="navbar-nav ms-auto align-items-lg-center gap-2">
+                <li class="nav-item"><a class="nav-link" asp-controller="Home" asp-action="Index">Home</a></li>
+                <li class="nav-item"><a class="nav-link" asp-controller="Home" asp-action="Register">Register</a></li>
+                <li class="nav-item"><a class="nav-link" asp-controller="Home" asp-action="Privacy">Privacy Policy</a></li>
+                <li class="nav-item"><a class="nav-link" asp-controller="Home" asp-action="Contact">Contact Us</a></li>
+                <li class="nav-item"><a class="btn btn-sm btn-light" asp-controller="Home" asp-action="Login">Login</a></li>
+                <li class="nav-item"><a class="btn btn-sm btn-warning fw-semibold" asp-controller="Home" asp-action="GoogleLogin">Login with Gmail</a></li>
             </ul>
         </div>
     </nav>
@@ -28,8 +31,14 @@
     @RenderBody()
 </div>
 
-<footer class="footer text-center py-3 mt-4">
-    <small>&copy; @DateTime.Now.Year - Freshers Portfolio Hub</small>
+<footer class="footer py-3 mt-4">
+    <div class="container d-flex flex-column flex-md-row justify-content-between align-items-center gap-2">
+        <small>&copy; @DateTime.Now.Year - Freshers Portfolio Hub</small>
+        <div class="d-flex gap-3 small">
+            <a asp-controller="Home" asp-action="Privacy" class="footer-link">Privacy Policy</a>
+            <a asp-controller="Home" asp-action="Contact" class="footer-link">Contact Us</a>
+        </div>
+    </div>
 </footer>
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
