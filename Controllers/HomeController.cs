@@ -58,8 +58,8 @@ public class HomeController(ApplicationDbContext db) : Controller
 
         var featuredProfiles = await db.StudentProfiles
             .AsNoTracking()
-            .OrderByDescending(x => x.HasVideo)
-            .ThenByDescending(x => x.HasCertifications)
+            .OrderByDescending(x => x.VideoPath != null && x.VideoPath != "")
+            .ThenByDescending(x => x.CertificationsPath != null && x.CertificationsPath != "")
             .ThenByDescending(x => x.CreatedOn)
             .Take(2)
             .ToListAsync();
