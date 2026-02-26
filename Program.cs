@@ -45,8 +45,9 @@ using (var scope = app.Services.CreateScope())
     try
     {
         db.Database.ExecuteSqlRaw("SELECT 1 FROM Companies LIMIT 1;");
-        db.Database.ExecuteSqlRaw("SELECT 1 FROM AppUsers LIMIT 1;");
+        db.Database.ExecuteSqlRaw("SELECT ProfilePhotoPath, CvPath FROM AppUsers LIMIT 1;");
         db.Database.ExecuteSqlRaw("SELECT 1 FROM JobPostings LIMIT 1;");
+        db.Database.ExecuteSqlRaw("SELECT Cgpa, ResumePath FROM StudentProfiles LIMIT 1;");
     }
     catch (SqliteException)
     {

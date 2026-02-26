@@ -44,13 +44,10 @@ public class AccountController(ApplicationDbContext db) : Controller
     }
 
     [HttpGet]
-    public IActionResult Register()
+    public IActionResult Register() => View(new UserRegistrationViewModel
     {
-        return View(new UserRegistrationViewModel
-        {
-            CompanyOptions = db.Companies.AsNoTracking().Select(x => new SelectListItem(x.Name, x.Id.ToString())).ToList()
-        });
-    }
+        CompanyOptions = db.Companies.AsNoTracking().Select(x => new SelectListItem(x.Name, x.Id.ToString())).ToList()
+    });
 
     [HttpPost]
     [ValidateAntiForgeryToken]
@@ -77,7 +74,9 @@ public class AccountController(ApplicationDbContext db) : Controller
             Email = model.Email,
             PasswordHash = PasswordHelper.Hash(model.Password),
             Role = model.Role,
-            CompanyId = model.Role == "HR" ? model.CompanyId : null
+            CompanyId = model.Role == "HR" ? model.CompanyId : null,
+            ProfilePhotoPath = await SaveFile(model.ProfilePhoto, "images"),
+            CvPath = await SaveFile(model.CvFile, "documents")
         };
 
         db.AppUsers.Add(user);
@@ -92,10 +91,14 @@ public class AccountController(ApplicationDbContext db) : Controller
     public async Task<IActionResult> Dashboard()
     {
         var role = User.FindFirstValue(ClaimTypes.Role) ?? "Student";
+        var userId = int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier) ?? "0");
+        var user = await db.AppUsers.AsNoTracking().FirstOrDefaultAsync(x => x.Id == userId);
+
         var model = new DashboardViewModel
         {
             UserName = User.Identity?.Name ?? "User",
             Role = role,
+            UserPhotoPath = user?.ProfilePhotoPath,
             Companies = await db.Companies.AsNoTracking().Take(10).ToListAsync(),
             Jobs = await db.JobPostings.AsNoTracking().Include(x => x.Company).OrderByDescending(x => x.CreatedOn).Take(10).ToListAsync(),
             HrUsers = await db.AppUsers.AsNoTracking().Where(x => x.Role == "HR").Take(10).ToListAsync()
@@ -111,5 +114,18 @@ public class AccountController(ApplicationDbContext db) : Controller
     {
         await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
         return RedirectToAction("Index", "Home");
+    }
+
+    private async Task<string?> SaveFile(IFormFile? file, string category)
+    {
+        if (file is null || file.Length == 0) return null;
+        var uploadsRoot = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "uploads", category);
+        Directory.CreateDirectory(uploadsRoot);
+        var extension = Path.GetExtension(file.FileName);
+        var uniqueName = $"{Guid.NewGuid()}{extension}";
+        var fullPath = Path.Combine(uploadsRoot, uniqueName);
+        await using var stream = System.IO.File.Create(fullPath);
+        await file.CopyToAsync(stream);
+        return $"/uploads/{category}/{uniqueName}";
     }
 }

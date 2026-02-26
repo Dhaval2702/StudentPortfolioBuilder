@@ -23,6 +23,9 @@ public class AppUser
     [MaxLength(40)]
     public string Role { get; set; } = "Student";
 
+    public string? ProfilePhotoPath { get; set; }
+    public string? CvPath { get; set; }
+
     public int? CompanyId { get; set; }
     public Company? Company { get; set; }
 

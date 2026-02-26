@@ -1,272 +1,96 @@
 @model RegistrationViewModel
-@{
-    ViewData["Title"] = "Create Profile";
-}
+@{ ViewData["Title"] = "Create Profile"; }
 
 <div class="register-page">
     <div class="register-heading text-center mb-3">
         <h1 class="register-title">Create Student Profile</h1>
-        <p class="register-subtitle">Build your portfolio by entering your details and uploading documents to showcase your achievements.</p>
+        <p class="register-subtitle">Step-by-step portfolio creation journey.</p>
     </div>
 
     <div class="register-stepper mb-4" id="registerStepper">
-        <div class="step-item step-active" data-step="1"><span class="step-no">1</span><span>Basic Info</span></div>
-        <div class="step-item" data-step="2"><span class="step-no">2</span><span>Education &amp; Career</span></div>
-        <div class="step-item" data-step="3"><span class="step-no">3</span><span>Upload Documents</span></div>
-        <div class="step-item" data-step="4"><span class="step-no">4</span><span>Video Resume</span></div>
+        <div class="step-item step-active" data-step="1"><span class="step-no">1</span><span>Basic</span></div>
+        <div class="step-item" data-step="2"><span class="step-no">2</span><span>Education</span></div>
+        <div class="step-item" data-step="3"><span class="step-no">3</span><span>Documents</span></div>
+        <div class="step-item" data-step="4"><span class="step-no">4</span><span>Finish</span></div>
     </div>
 
-    <div class="register-layout">
-        <div class="register-illustration d-none d-xl-flex">
-            <img src="https://images.unsplash.com/photo-1531482615713-2afd69097998?auto=format&fit=crop&w=700&q=80" alt="Student illustration" />
-        </div>
+    <div class="register-card card border-0 shadow-sm">
+        <div class="card-body p-4">
+            <h2 class="step-title" id="stepTitle">Step 1 of 4: Basic Info</h2>
+            <form asp-action="Register" method="post" enctype="multipart/form-data" id="multiStepForm">
+                @Html.AntiForgeryToken()
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
 
-        <div class="register-card card border-0 shadow-sm">
-            <div class="card-body p-4 p-lg-5">
-                <h2 class="step-title" id="stepTitle">Step 1 of 4: Basic Info</h2>
-                <hr class="mt-2 mb-4" />
-
-                <form asp-action="Register" method="post" enctype="multipart/form-data" class="create-form-layout" id="multiStepForm">
-                    @Html.AntiForgeryToken()
-                    <div asp-validation-summary="ModelOnly" class="text-danger mb-2"></div>
-
-                    <section class="step-pane active" data-step-pane="1">
-                        <div class="row g-4 align-items-start mb-4">
-                            <div class="col-md-3">
-                                <div class="avatar-box text-center">
-                                    <div class="avatar-placeholder mb-2" id="avatarPreviewWrap">
-                                        <i class="bi bi-person-fill" id="avatarIcon"></i>
-                                        <img id="avatarPreview" alt="Selected profile" class="d-none" />
-                                    </div>
-                                    <button class="btn btn-gradient w-100" type="button" data-pick-file="Image">Upload Photo</button>
-                                    <input asp-for="Image" id="Image" class="d-none" type="file" accept="image/*" />
-                                    <small class="text-muted file-name" data-file-name="Image">No file selected</small>
-                                    <span asp-validation-for="Image" class="text-danger d-block small mt-1"></span>
-                                </div>
-                            </div>
-
-                            <div class="col-md-9">
-                                <div class="mb-3">
-                                    <label asp-for="Name" class="form-label fw-semibold"></label>
-                                    <input asp-for="Name" class="form-control form-control-lg" />
-                                    <span asp-validation-for="Name" class="text-danger"></span>
-                                </div>
-
-                                <div class="mb-3">
-                                    <label asp-for="Address" class="form-label fw-semibold"></label>
-                                    <input asp-for="Address" class="form-control form-control-lg" />
-                                    <span asp-validation-for="Address" class="text-danger"></span>
-                                </div>
-
-                                <div>
-                                    <label asp-for="Email" class="form-label fw-semibold"></label>
-                                    <input asp-for="Email" class="form-control form-control-lg" />
-                                    <span asp-validation-for="Email" class="text-danger"></span>
-                                </div>
-                            </div>
+                <section class="step-pane active" data-step-pane="1">
+                    <div class="row g-3">
+                        <div class="col-md-4">
+                            <label class="form-label fw-semibold">Profile Image</label>
+                            <input asp-for="Image" id="Image" class="form-control" type="file" accept="image/*" />
+                            <span asp-validation-for="Image" class="text-danger"></span>
                         </div>
-                    </section>
+                        <div class="col-md-8">
+                            <label asp-for="Name" class="form-label fw-semibold"></label>
+                            <input asp-for="Name" class="form-control" />
+                            <span asp-validation-for="Name" class="text-danger"></span>
 
-                    <section class="step-pane" data-step-pane="2">
-                        <div class="row g-3 mb-4">
-                            <div class="col-12">
-                                <label asp-for="CollegeName" class="form-label fw-semibold"></label>
-                                <input asp-for="CollegeName" class="form-control form-control-lg" />
-                                <span asp-validation-for="CollegeName" class="text-danger"></span>
-                            </div>
-                            <div class="col-md-6">
-                                <label asp-for="FieldOfStudy" class="form-label fw-semibold"></label>
-                                <select asp-for="FieldOfStudy" asp-items="Model.FieldsOfStudyOptions" class="form-select form-select-lg">
-                                    <option value="">Select your field</option>
-                                </select>
-                                <span asp-validation-for="FieldOfStudy" class="text-danger"></span>
-                            </div>
-                            <div class="col-md-6">
-                                <label asp-for="JobRole" class="form-label fw-semibold"></label>
-                                <select asp-for="JobRole" asp-items="Model.JobRolesOptions" class="form-select form-select-lg">
-                                    <option value="">Select career role</option>
-                                </select>
-                                <span asp-validation-for="JobRole" class="text-danger"></span>
-                            </div>
+                            <label asp-for="Email" class="form-label fw-semibold mt-2"></label>
+                            <input asp-for="Email" class="form-control" />
+                            <span asp-validation-for="Email" class="text-danger"></span>
+
+                            <label asp-for="Address" class="form-label fw-semibold mt-2"></label>
+                            <input asp-for="Address" class="form-control" />
+                            <span asp-validation-for="Address" class="text-danger"></span>
                         </div>
-                    </section>
-
-                    <section class="step-pane" data-step-pane="3">
-                        <div class="upload-list mb-4">
-                            <div class="upload-row">
-                                <label asp-for="DegreeCertificate" class="mb-0 fw-semibold"></label>
-                                <div class="upload-actions">
-                                    <button type="button" class="btn btn-gradient px-4" data-pick-file="DegreeCertificate">Upload</button>
-                                    <input asp-for="DegreeCertificate" id="DegreeCertificate" class="d-none" type="file" accept=".pdf,.doc,.docx,image/*" />
-                                    <small class="text-muted file-name" data-file-name="DegreeCertificate">No file selected</small>
-                                </div>
-                            </div>
-                            <span asp-validation-for="DegreeCertificate" class="text-danger small d-block mb-2"></span>
-
-                            <div class="upload-row">
-                                <label asp-for="Marksheet" class="mb-0 fw-semibold"></label>
-                                <div class="upload-actions">
-                                    <button type="button" class="btn btn-gradient px-4" data-pick-file="Marksheet">Upload</button>
-                                    <input asp-for="Marksheet" id="Marksheet" class="d-none" type="file" accept=".pdf,.doc,.docx,image/*" />
-                                    <small class="text-muted file-name" data-file-name="Marksheet">No file selected</small>
-                                </div>
-                            </div>
-                            <span asp-validation-for="Marksheet" class="text-danger small d-block mb-2"></span>
-
-                            <div class="upload-row">
-                                <label asp-for="Certifications" class="mb-0 fw-semibold"></label>
-                                <div class="upload-actions">
-                                    <button type="button" class="btn btn-gradient px-4" data-pick-file="Certifications">Upload</button>
-                                    <input asp-for="Certifications" id="Certifications" class="d-none" type="file" accept=".pdf,.doc,.docx,image/*" />
-                                    <small class="text-muted file-name" data-file-name="Certifications">No file selected</small>
-                                </div>
-                            </div>
-                            <span asp-validation-for="Certifications" class="text-danger small d-block mb-2"></span>
-                        </div>
-                    </section>
-
-                    <section class="step-pane" data-step-pane="4">
-                        <div class="upload-list mb-4">
-                            <div class="upload-row">
-                                <label asp-for="Video" class="mb-0 fw-semibold">Video Resume (Optional)</label>
-                                <div class="upload-actions">
-                                    <button type="button" class="btn btn-gradient px-4" data-pick-file="Video">Upload</button>
-                                    <input asp-for="Video" id="Video" class="d-none" type="file" accept="video/*" />
-                                    <small class="text-muted file-name" data-file-name="Video">No file selected</small>
-                                </div>
-                            </div>
-                            <span asp-validation-for="Video" class="text-danger small d-block"></span>
-                        </div>
-
-                        <div class="alert alert-light border text-secondary">
-                            Review completed steps and click <strong>Create Profile</strong> to submit.
-                        </div>
-                    </section>
-
-                    <div class="register-actions d-flex justify-content-between">
-                        <button type="button" class="btn btn-outline-secondary btn-lg px-4" id="prevBtn" disabled><i class="bi bi-arrow-left me-2"></i>Back</button>
-                        <button type="button" class="btn btn-gradient btn-lg px-5" id="nextBtn">Next <i class="bi bi-arrow-right ms-2"></i></button>
-                        <button type="submit" class="btn btn-gradient btn-lg px-5 d-none" id="submitBtn">Create Profile</button>
                     </div>
-                </form>
-            </div>
-            <div class="card-footer text-center py-3 step-footer" id="stepFooter">Step 1 of 4</div>
+                </section>
+
+                <section class="step-pane" data-step-pane="2">
+                    <div class="row g-3">
+                        <div class="col-md-6"><label asp-for="CollegeName" class="form-label"></label><input asp-for="CollegeName" class="form-control" /><span asp-validation-for="CollegeName" class="text-danger"></span></div>
+                        <div class="col-md-3"><label asp-for="FieldOfStudy" class="form-label"></label><select asp-for="FieldOfStudy" asp-items="Model.FieldsOfStudyOptions" class="form-select"><option value="">Select</option></select><span asp-validation-for="FieldOfStudy" class="text-danger"></span></div>
+                        <div class="col-md-3"><label asp-for="JobRole" class="form-label"></label><select asp-for="JobRole" asp-items="Model.JobRolesOptions" class="form-select"><option value="">Select</option></select><span asp-validation-for="JobRole" class="text-danger"></span></div>
+                        <div class="col-md-3"><label asp-for="Cgpa" class="form-label"></label><input asp-for="Cgpa" class="form-control" min="0" max="10" step="0.01" /><span asp-validation-for="Cgpa" class="text-danger"></span></div>
+                    </div>
+                </section>
+
+                <section class="step-pane" data-step-pane="3">
+                    <div class="row g-3">
+                        <div class="col-md-6"><label asp-for="Resume" class="form-label"></label><input asp-for="Resume" id="Resume" class="form-control" type="file" accept=".pdf,.doc,.docx" /><span asp-validation-for="Resume" class="text-danger"></span></div>
+                        <div class="col-md-6"><label asp-for="DegreeCertificate" class="form-label"></label><input asp-for="DegreeCertificate" id="DegreeCertificate" class="form-control" type="file" accept=".pdf,.doc,.docx,image/*" /><span asp-validation-for="DegreeCertificate" class="text-danger"></span></div>
+                        <div class="col-md-6"><label asp-for="Marksheet" class="form-label"></label><input asp-for="Marksheet" id="Marksheet" class="form-control" type="file" accept=".pdf,.doc,.docx,image/*" /><span asp-validation-for="Marksheet" class="text-danger"></span></div>
+                        <div class="col-md-6"><label asp-for="Certifications" class="form-label"></label><input asp-for="Certifications" id="Certifications" class="form-control" type="file" accept=".pdf,.doc,.docx,image/*" /><span asp-validation-for="Certifications" class="text-danger"></span></div>
+                    </div>
+                </section>
+
+                <section class="step-pane" data-step-pane="4">
+                    <div class="row g-3">
+                        <div class="col-md-6"><label asp-for="Video" class="form-label"></label><input asp-for="Video" id="Video" class="form-control" type="file" accept="video/*" /><span asp-validation-for="Video" class="text-danger"></span></div>
+                    </div>
+                    <div class="alert alert-info mt-3">Click Create Profile to finish.</div>
+                </section>
+
+                <div class="d-flex justify-content-between mt-3">
+                    <button type="button" class="btn btn-outline-secondary" id="prevBtn" disabled>Back</button>
+                    <button type="button" class="btn btn-gradient" id="nextBtn">Next</button>
+                    <button type="submit" class="btn btn-gradient d-none" id="submitBtn">Create Profile</button>
+                </div>
+            </form>
         </div>
+        <div class="card-footer text-center" id="stepFooter">Step 1 of 4</div>
     </div>
 </div>
 
 @section Scripts {
-    <script>
-        (() => {
-            document.querySelectorAll('[data-pick-file]').forEach(btn => {
-                btn.addEventListener('click', () => {
-                    const id = btn.getAttribute('data-pick-file');
-                    const input = document.getElementById(id);
-                    if (input) input.click();
-                });
-            });
-
-            const updateFileName = (input) => {
-                const target = document.querySelector(`[data-file-name="${input.id}"]`);
-                if (target) {
-                    target.textContent = input.files && input.files.length ? input.files[0].name : 'No file selected';
-                }
-            };
-
-            ['Image', 'DegreeCertificate', 'Marksheet', 'Certifications', 'Video'].forEach(id => {
-                const input = document.getElementById(id);
-                if (!input) return;
-                input.addEventListener('change', () => {
-                    updateFileName(input);
-                    if (id === 'Image' && input.files && input.files[0]) {
-                        const preview = document.getElementById('avatarPreview');
-                        const icon = document.getElementById('avatarIcon');
-                        preview.src = URL.createObjectURL(input.files[0]);
-                        preview.classList.remove('d-none');
-                        icon.classList.add('d-none');
-                    }
-                });
-            });
-
-            const totalSteps = 4;
-            let currentStep = 1;
-
-            const titleEl = document.getElementById('stepTitle');
-            const footerEl = document.getElementById('stepFooter');
-            const prevBtn = document.getElementById('prevBtn');
-            const nextBtn = document.getElementById('nextBtn');
-            const submitBtn = document.getElementById('submitBtn');
-
-            const stepTitles = {
-                1: 'Step 1 of 4: Basic Info',
-                2: 'Step 2 of 4: Education & Career',
-                3: 'Step 3 of 4: Upload Documents',
-                4: 'Step 4 of 4: Video Resume'
-            };
-
-            const requiredByStep = {
-                1: ['Image', 'Name', 'Address', 'Email'],
-                2: ['CollegeName', 'FieldOfStudy', 'JobRole'],
-                3: ['DegreeCertificate', 'Marksheet', 'Certifications'],
-                4: []
-            };
-
-            const validateStep = (step) => {
-                const ids = requiredByStep[step] || [];
-                for (const id of ids) {
-                    const field = document.getElementById(id);
-                    if (!field) continue;
-                    if (field.type === 'file') {
-                        if (!field.files || field.files.length === 0) {
-                            field.focus();
-                            return false;
-                        }
-                    } else if (!field.value || !field.value.trim()) {
-                        field.focus();
-                        return false;
-                    }
-                }
-                return true;
-            };
-
-            const refreshStep = () => {
-                document.querySelectorAll('.step-pane').forEach(pane => {
-                    pane.classList.toggle('active', Number(pane.getAttribute('data-step-pane')) === currentStep);
-                });
-
-                document.querySelectorAll('#registerStepper .step-item').forEach(item => {
-                    const step = Number(item.getAttribute('data-step'));
-                    item.classList.toggle('step-active', step === currentStep);
-                });
-
-                titleEl.textContent = stepTitles[currentStep];
-                footerEl.textContent = `Step ${currentStep} of ${totalSteps}`;
-
-                prevBtn.disabled = currentStep === 1;
-                nextBtn.classList.toggle('d-none', currentStep === totalSteps);
-                submitBtn.classList.toggle('d-none', currentStep !== totalSteps);
-            };
-
-            nextBtn.addEventListener('click', () => {
-                if (!validateStep(currentStep)) {
-                    alert('Please complete required fields in this step before moving forward.');
-                    return;
-                }
-
-                if (currentStep < totalSteps) {
-                    currentStep += 1;
-                    refreshStep();
-                }
-            });
-
-            prevBtn.addEventListener('click', () => {
-                if (currentStep > 1) {
-                    currentStep -= 1;
-                    refreshStep();
-                }
-            });
-
-            refreshStep();
-        })();
-    </script>
+<script>
+(() => {
+ let s=1,t=4;
+ const req={1:['Image','Name','Email','Address'],2:['CollegeName','FieldOfStudy','JobRole','Cgpa'],3:['Resume','DegreeCertificate','Marksheet','Certifications'],4:[]};
+ const st=document.getElementById('stepTitle'),sf=document.getElementById('stepFooter'),p=document.getElementById('prevBtn'),n=document.getElementById('nextBtn'),sub=document.getElementById('submitBtn');
+ const refresh=()=>{document.querySelectorAll('.step-pane').forEach(x=>x.classList.toggle('active',+x.dataset.stepPane===s));document.querySelectorAll('#registerStepper .step-item').forEach(x=>x.classList.toggle('step-active',+x.dataset.step===s));st.textContent=`Step ${s} of ${t}`;sf.textContent=`Step ${s} of ${t}`;p.disabled=s===1;n.classList.toggle('d-none',s===t);sub.classList.toggle('d-none',s!==t)};
+ const ok=()=>{for(const id of req[s]){const f=document.getElementById(id);if(!f)continue;if(f.type==='file'){if(!f.files.length)return false;}else if(!f.value.trim())return false;}return true;};
+ n.onclick=()=>{if(!ok()) return alert('Please fill current step required fields'); if(s<t){s++;refresh();}};
+ p.onclick=()=>{if(s>1){s--;refresh();}};
+ refresh();
+})();
+</script>
 }

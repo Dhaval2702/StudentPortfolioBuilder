@@ -1,13 +1,17 @@
 @model StudentPortfolioBuilder.ViewModels.DashboardViewModel
 @{ ViewData["Title"] = "Dashboard"; }
 
-<h2 class="mb-3">Welcome @Model.UserName</h2>
-<div class="alert alert-info">Role: <strong>@Model.Role</strong></div>
-
-@if (Model.Role == "Admin")
-{
-    <a asp-controller="Admin" asp-action="Index" class="btn btn-gradient mb-3">Open Admin Onboarding</a>
-}
+<div class="panel-card mb-3 d-flex align-items-center gap-3">
+    <img src="@(Model.UserPhotoPath ?? "/images/default-avatar.svg")" style="width:72px;height:72px;border-radius:50%;object-fit:cover" alt="user" />
+    <div>
+        <h3 class="mb-0">Welcome @Model.UserName!</h3>
+        <div class="text-muted">Role: @Model.Role</div>
+    </div>
+    @if (Model.Role == "Admin")
+    {
+        <a asp-controller="Admin" asp-action="Index" class="btn btn-gradient ms-auto">Open Admin Onboarding</a>
+    }
+</div>
 
 <div class="row g-3">
     <div class="col-md-4"><div class="panel-card"><h5>Companies</h5><p class="display-6">@Model.Companies.Count</p></div></div>

@@ -99,3 +99,12 @@ body {
     .upload-row { flex-direction: column; align-items: flex-start; }
     .register-stepper { grid-template-columns: 1fr; }
 }
+
+.filter-side {
+    background: linear-gradient(180deg, #072654, #0a3e86);
+}
+
+.top-rated {
+    border: 2px solid #f59e0b;
+    box-shadow: 0 8px 24px rgba(245, 158, 11, 0.25);
+}

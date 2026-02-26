@@ -63,14 +63,17 @@ public static class SeedData
                     Email = "hr@studentportfolio.local",
                     PasswordHash = PasswordHelper.Hash("Hr@123"),
                     Role = "HR",
-                    CompanyId = firstCompany.Id
+                    CompanyId = firstCompany.Id,
+                    ProfilePhotoPath = "/images/default-avatar.svg"
                 },
                 new AppUser
                 {
                     FullName = "Demo Student",
                     Email = "student@studentportfolio.local",
                     PasswordHash = PasswordHelper.Hash("Student@123"),
-                    Role = "Student"
+                    Role = "Student",
+                    ProfilePhotoPath = "/images/default-avatar.svg",
+                    CvPath = "/uploads/documents/student-cv.pdf"
                 });
 
             await context.SaveChangesAsync();
@@ -114,7 +117,9 @@ public static class SeedData
                 CollegeName = college,
                 FieldOfStudy = field,
                 JobRole = role,
+                Cgpa = Math.Round((decimal)(random.NextDouble() * 3 + 7), 2),
                 ImagePath = $"https://i.pravatar.cc/300?img={random.Next(1, 70)}",
+                ResumePath = $"/uploads/documents/resume-{i}.pdf",
                 DegreeCertificatePath = $"/uploads/documents/degree-{i}.pdf",
                 MarksheetPath = $"/uploads/documents/marksheet-{i}.pdf",
                 CertificationsPath = hasCert ? $"/uploads/documents/cert-{i}.pdf" : null,
