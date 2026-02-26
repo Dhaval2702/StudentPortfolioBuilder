@@ -29,8 +29,17 @@ public class RegistrationViewModel
     public string JobRole { get; set; } = string.Empty;
 
     [Required]
+    [Range(0, 10)]
+    [Display(Name = "CGPA")]
+    public decimal Cgpa { get; set; }
+
+    [Required]
     [Display(Name = "Profile Image")]
     public IFormFile? Image { get; set; }
+
+    [Required]
+    [Display(Name = "CV / Resume")]
+    public IFormFile? Resume { get; set; }
 
     [Required]
     [Display(Name = "Degree Certificate")]

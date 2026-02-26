@@ -1,156 +1,143 @@
 @model HomePageViewModel
-@{
-    ViewData["Title"] = "Home";
-}
-
-<section class="hero-section rounded-4 p-4 mb-4 border-0 shadow-sm">
-    <h1 class="h2 fw-bold mb-1">Find Fresher Talent</h1>
-    <p class="mb-0 text-secondary">LinkedIn-style discovery for student portfolios with smart filters and media highlights.</p>
-</section>
-
-@if (TempData["SuccessMessage"] is string success)
-{
-    <div class="alert alert-success">@success</div>
-}
-@if (TempData["InfoMessage"] is string info)
-{
-    <div class="alert alert-info">@info</div>
-}
-
-<div class="card border-0 shadow-sm rounded-4 mb-4 filter-panel">
-    <div class="card-body">
-        <form method="get" asp-action="Index" class="row g-3 align-items-end">
-            <div class="col-md-3">
-                <label class="form-label">Name</label>
-                <input asp-for="Filters.Name" class="form-control" placeholder="Search by name" />
-            </div>
-            <div class="col-md-3">
-                <label class="form-label">College</label>
-                <input asp-for="Filters.CollegeName" class="form-control" placeholder="Search by college" />
-            </div>
-            <div class="col-md-3">
-                <label class="form-label">Field of Study</label>
-                <select asp-for="Filters.FieldOfStudy" asp-items="Model.FieldsOfStudy" class="form-select">
-                    <option value="">All fields</option>
-                </select>
-            </div>
-            <div class="col-md-3">
-                <label class="form-label">Preferred Role</label>
-                <select asp-for="Filters.JobRole" asp-items="Model.JobRoles" class="form-select">
-                    <option value="">All roles</option>
-                </select>
-            </div>
-            <div class="col-md-3">
-                <div class="form-check mt-2">
-                    <input class="form-check-input" asp-for="Filters.OnlyWithVideo" />
-                    <label class="form-check-label" asp-for="Filters.OnlyWithVideo">Only profiles with video</label>
-                </div>
-            </div>
-            <div class="col-md-3">
-                <div class="form-check mt-2">
-                    <input class="form-check-input" asp-for="Filters.OnlyWithCertifications" />
-                    <label class="form-check-label" asp-for="Filters.OnlyWithCertifications">Only with certifications</label>
-                </div>
-            </div>
-            <div class="col-md-6 text-md-end">
-                <button class="btn btn-linkedin px-4" type="submit">Apply Filters</button>
-                <a asp-action="Index" class="btn btn-outline-secondary px-4">Reset</a>
-            </div>
-        </form>
-    </div>
-</div>
-
-<div class="d-flex justify-content-between align-items-center mb-3">
-    <h2 class="h4 mb-0">Profiles</h2>
-    <span class="badge linkedin-badge">@Model.TotalCount candidates</span>
-</div>
+@{ ViewData["Title"] = "Home"; }
 
 <div class="row g-3">
-    @foreach (var profile in Model.Profiles)
-    {
-        <div class="col-md-6 col-xl-4">
-            <div class="card portfolio-card h-100 border-0 shadow-sm rounded-4 @(profile.HasVideo || profile.HasCertifications ? "profile-highlight" : "")">
-                <img src="@(profile.ImagePath ?? "/images/default-avatar.svg")" class="card-img-top rounded-top-4" alt="@profile.Name" />
+    <div class="col-xl-3">
+        <aside class="filter-side p-3 rounded-4 h-100">
+            <h4 class="text-white fw-bold mb-3">⋯ Find Talent by ⋯</h4>
+            <form method="get" asp-action="Index" class="d-grid gap-2 mb-3">
+                <input asp-for="Filters.Name" class="form-control" placeholder="Search Roles..." />
+                <select asp-for="Filters.FieldOfStudy" asp-items="Model.FieldsOfStudy" class="form-select"><option value="">All Fields</option></select>
+                <select asp-for="Filters.JobRole" asp-items="Model.JobRoles" class="form-select"><option value="">All Roles</option></select>
+                <button class="btn btn-light fw-semibold">Apply Filters</button>
+            </form>
 
-                <div class="profile-overlay p-3">
-                    <p class="mb-1"><strong>Email:</strong> @(string.IsNullOrWhiteSpace(profile.Email) ? "N/A" : profile.Email)</p>
-                    <p class="mb-1"><strong>Address:</strong> @profile.Address</p>
-                    <p class="mb-1"><strong>College:</strong> @profile.CollegeName</p>
-                    <p class="mb-1"><strong>Field:</strong> @profile.FieldOfStudy</p>
-                    <p class="mb-2"><strong>Role:</strong> @profile.JobRole</p>
-                    <div class="d-flex flex-wrap gap-2">
-                        <a class="btn btn-sm btn-light" href="@profile.DegreeCertificatePath" target="_blank">Degree</a>
-                        <a class="btn btn-sm btn-light" href="@profile.MarksheetPath" target="_blank">Marksheet</a>
-                        @if (profile.HasCertifications)
-                        {
-                            <a class="btn btn-sm btn-success" href="@profile.CertificationsPath" target="_blank">Certifications</a>
-                        }
-                        @if (profile.HasVideo)
-                        {
-                            <a class="btn btn-sm btn-danger" href="@profile.VideoPath" target="_blank">Video Intro</a>
-                        }
+            <div class="text-white-50 small mb-2">Categories</div>
+            <div class="d-grid gap-2">
+                @foreach (var cat in Model.CategoryCounts.Take(8))
+                {
+                    <a asp-action="Index" asp-route-fieldOfStudy="@cat.Key" class="side-pill d-flex justify-content-between text-decoration-none">
+                        <span><i class="bi bi-grid-3x3-gap-fill me-1"></i>@cat.Key</span>
+                        <span class="text-info">●</span>
+                    </a>
+                }
+            </div>
+        </aside>
+    </div>
+
+    <div class="col-xl-9">
+        <section class="hero-v2 p-4 rounded-4 mb-3">
+            <div class="hero-content-wrap">
+                <h2 class="hero-sub mb-2">Kickstart Your Career with<br />a Powerful Student <span>Portfolio!</span></h2>
+                <div class="d-flex flex-wrap gap-3 mt-3">
+                    <a class="btn btn-hero btn-lg" asp-action="Register">Create Your Profile</a>
+                    <a class="btn btn-watch btn-lg" href="#featuredProfiles"><i class="bi bi-play-circle me-1"></i>Watch Video</a>
+                </div>
+            </div>
+        </section>
+
+        <div class="stats-strip mb-3">
+            <div class="stat-card students"><div class="stat-content"><span class="stat-icon"><i class="bi bi-people-fill"></i></span><div><strong>@Model.TotalCount+</strong><span>Students</span></div></div></div>
+            <div class="stat-card colleges"><div class="stat-content"><span class="stat-icon"><i class="bi bi-bank2"></i></span><div><strong>@Model.CategoryCounts.Count+</strong><span>Colleges</span></div></div></div>
+            <div class="stat-card recruiters"><div class="stat-content"><span class="stat-icon"><i class="bi bi-person-workspace"></i></span><div><strong>@Model.RecruiterCount+</strong><span>Recruiters</span></div></div></div>
+            <div class="stat-card jobs"><div class="stat-content"><span class="stat-icon"><i class="bi bi-journal-text"></i></span><div><strong>@Model.JobCount+</strong><span>Fields</span></div></div></div>
+        </div>
+
+        <form method="get" asp-action="Index" class="search-strip mb-3">
+            <div class="search-icon"><i class="bi bi-search"></i></div>
+            <input asp-for="Filters.Name" class="form-control" placeholder="Search student by name, skills, college..." />
+            <select asp-for="Filters.FieldOfStudy" class="form-select">
+                <option value="">All Fields</option>
+                @foreach (var field in Model.FieldsOfStudy) { <option value="@field.Value">@field.Text</option> }
+            </select>
+            <select asp-for="Filters.JobRole" class="form-select">
+                <option value="">All Roles</option>
+                @foreach (var role in Model.JobRoles) { <option value="@role.Value">@role.Text</option> }
+            </select>
+            <button class="btn btn-gradient px-4">Search</button>
+        </form>
+
+        <div class="category-chip-row mb-3">
+            <span class="fw-semibold me-2">Top Categories</span>
+            <a asp-action="Index" class="chip chip-active"><i class="bi bi-grid me-1"></i>All</a>
+            @foreach (var cat in Model.CategoryCounts.Take(6))
+            {
+                <a asp-action="Index" asp-route-fieldOfStudy="@cat.Key" class="chip"><i class="bi bi-bookmark-star me-1"></i>@cat.Key</a>
+            }
+        </div>
+
+        <div class="row g-3">
+            <div class="col-lg-9">
+                <div id="featuredProfiles" class="d-flex justify-content-between align-items-center mb-2">
+                    <h3 class="section-title-sm mb-0">Featured Student Profiles</h3>
+                    <a asp-action="Profiles" class="btn btn-sm btn-outline-primary">Browse All <i class="bi bi-arrow-right"></i></a>
+                </div>
+
+                <div class="row g-3 mb-3">
+                    @foreach (var p in Model.FeaturedProfiles)
+                    {
+                        <div class="col-md-6 col-xxl-4">
+                            <article class="card profile-tile h-100 @(p.IsTopRated ? "top-rated" : string.Empty)">
+                                <img src="@(p.ImagePath ?? "/images/default-avatar.svg")" class="tile-img" alt="@p.Name" />
+                                <div class="card-body p-2">
+                                    <div class="d-flex justify-content-between align-items-start">
+                                        <div class="fw-bold">@p.Name</div>
+                                        <span class="badge bg-warning text-dark">@p.Cgpa</span>
+                                    </div>
+                                    <div class="small text-muted">@p.JobRole</div>
+                                    <div class="small"><i class="bi bi-geo-alt"></i> @p.Address</div>
+                                    <div class="small mb-2"><i class="bi bi-building"></i> @p.CollegeName</div>
+                                    <div class="d-flex gap-1 flex-wrap mb-2">
+                                        <span class="skill-badge"><i class="bi bi-mortarboard me-1"></i>@p.FieldOfStudy</span>
+                                        <span class="skill-badge"><i class="bi bi-briefcase me-1"></i>@p.JobRole.Split(' ').FirstOrDefault()</span>
+                                    </div>
+                                    <div class="d-flex gap-2">
+                                        <a asp-action="Profile" asp-route-id="@p.Id" class="btn btn-sm btn-primary flex-grow-1">View Profile</a>
+                                        @if (!string.IsNullOrWhiteSpace(p.ResumePath)) { <a href="@p.ResumePath" class="btn btn-sm btn-outline-secondary" target="_blank"><i class="bi bi-download"></i></a> }
+                                    </div>
+                                    @if (p.IsTopRated) { <div class="mt-1"><span class="badge bg-success">Top Rated</span></div> }
+                                </div>
+                            </article>
+                        </div>
+                    }
+                </div>
+            </div>
+
+            <div class="col-lg-3">
+                <div class="promo-gap-fill mb-3">
+                    <div class="d-flex justify-content-between align-items-center mb-2">
+                        <h5 class="mb-0">Complete Your Profile</h5>
+                        <i class="bi bi-three-dots text-white-50"></i>
+                    </div>
+                    <ul class="profile-checklist mb-3 ps-0">
+                        <li><i class="bi bi-stars"></i> Add Projects <i class="bi bi-check-lg ms-auto"></i></li>
+                        <li><i class="bi bi-collection"></i> Upload Certificates <i class="bi bi-check-lg ms-auto"></i></li>
+                        <li><i class="bi bi-camera-video"></i> Record Video Resume <i class="bi bi-check-lg ms-auto"></i></li>
+                    </ul>
+                    <a asp-action="Register" class="btn btn-start w-100">Get Started <i class="bi bi-chevron-right ms-1"></i></a>
+                </div>
+
+                <div class="panel-card mb-3">
+                    <div class="d-flex justify-content-between align-items-center mb-2">
+                        <h5 class="mb-0">Top Recruiters</h5>
+                        <a asp-action="Profiles" class="small text-decoration-none">View All</a>
+                    </div>
+                    <div class="recruiter-grid">
+                    @foreach (var c in Model.TopCompanies.Take(6))
+                    {
+                        <div class="recruiter-pill"><span>@c.Name</span><small>@c.Industry</small></div>
+                    }
                     </div>
                 </div>
 
-                <div class="card-body">
-                    <div class="d-flex justify-content-between align-items-start mb-2">
-                        <h3 class="h5 mb-0">@profile.Name</h3>
-                        <div class="d-flex gap-1 flex-wrap justify-content-end">
-                            @if (profile.HasVideo)
-                            {
-                                <span class="badge video-badge">Video</span>
-                            }
-                            @if (profile.HasCertifications)
-                            {
-                                <span class="badge cert-badge">Certified</span>
-                            }
-                        </div>
-                    </div>
-                    <p class="small text-muted mb-1"><strong>@profile.FieldOfStudy</strong></p>
-                    <p class="small text-muted mb-0">@profile.JobRole · @profile.CollegeName</p>
-                    <p class="tiny-note mt-2 mb-0">Hover to view full portfolio details</p>
+                <div class="panel-card compact-list">
+                    <h6 class="mb-2">Recent Placements</h6>
+                    @foreach (var j in Model.TrendingJobs.Take(6))
+                    {
+                        <div class="d-flex justify-content-between border-bottom py-1"><span class="small">@j.Title</span><span class="badge bg-primary">@j.Openings</span></div>
+                    }
                 </div>
             </div>
         </div>
-    }
+    </div>
 </div>
-
-@if (Model.TotalPages > 1)
-{
-    <nav class="mt-4" aria-label="Profile pagination">
-        <ul class="pagination justify-content-center">
-            <li class="page-item @(Model.CurrentPage == 1 ? "disabled" : string.Empty)">
-                <a class="page-link" asp-action="Index" asp-route-page="@(Model.CurrentPage - 1)"
-                   asp-route-name="@Model.Filters.Name"
-                   asp-route-collegeName="@Model.Filters.CollegeName"
-                   asp-route-fieldOfStudy="@Model.Filters.FieldOfStudy"
-                   asp-route-jobRole="@Model.Filters.JobRole"
-                   asp-route-onlyWithVideo="@Model.Filters.OnlyWithVideo"
-                   asp-route-onlyWithCertifications="@Model.Filters.OnlyWithCertifications">Previous</a>
-            </li>
-
-            @for (var p = Math.Max(1, Model.CurrentPage - 2); p <= Math.Min(Model.TotalPages, Model.CurrentPage + 2); p++)
-            {
-                <li class="page-item @(p == Model.CurrentPage ? "active" : string.Empty)">
-                    <a class="page-link" asp-action="Index" asp-route-page="@p"
-                       asp-route-name="@Model.Filters.Name"
-                       asp-route-collegeName="@Model.Filters.CollegeName"
-                       asp-route-fieldOfStudy="@Model.Filters.FieldOfStudy"
-                       asp-route-jobRole="@Model.Filters.JobRole"
-                       asp-route-onlyWithVideo="@Model.Filters.OnlyWithVideo"
-                       asp-route-onlyWithCertifications="@Model.Filters.OnlyWithCertifications">@p</a>
-                </li>
-            }
-
-            <li class="page-item @(Model.CurrentPage == Model.TotalPages ? "disabled" : string.Empty)">
-                <a class="page-link" asp-action="Index" asp-route-page="@(Model.CurrentPage + 1)"
-                   asp-route-name="@Model.Filters.Name"
-                   asp-route-collegeName="@Model.Filters.CollegeName"
-                   asp-route-fieldOfStudy="@Model.Filters.FieldOfStudy"
-                   asp-route-jobRole="@Model.Filters.JobRole"
-                   asp-route-onlyWithVideo="@Model.Filters.OnlyWithVideo"
-                   asp-route-onlyWithCertifications="@Model.Filters.OnlyWithCertifications">Next</a>
-            </li>
-        </ul>
-    </nav>
-}

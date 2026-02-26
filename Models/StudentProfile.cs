@@ -26,7 +26,11 @@ public class StudentProfile
     [MaxLength(100)]
     public string JobRole { get; set; } = string.Empty;
 
+    [Range(0, 10)]
+    public decimal Cgpa { get; set; } = 7.5m;
+
     public string? ImagePath { get; set; }
+    public string? ResumePath { get; set; }
     public string? DegreeCertificatePath { get; set; }
     public string? MarksheetPath { get; set; }
     public string? CertificationsPath { get; set; }
@@ -40,4 +44,5 @@ public class StudentProfile
 
     public bool HasVideo => !string.IsNullOrWhiteSpace(VideoPath);
     public bool HasCertifications => !string.IsNullOrWhiteSpace(CertificationsPath);
+    public bool IsTopRated => Cgpa >= 9.0m;
 }

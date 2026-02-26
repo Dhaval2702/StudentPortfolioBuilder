@@ -1,83 +1,96 @@
 @model RegistrationViewModel
-@{
-    ViewData["Title"] = "Register";
-}
+@{ ViewData["Title"] = "Create Profile"; }
 
-<section class="hero-section rounded-4 p-4 mb-4">
-    <h1 class="h3 fw-bold mb-1">Create Portfolio Registration</h1>
-    <p class="mb-0">Complete details once, and your profile will appear on landing highlights.</p>
-</section>
+<div class="register-page">
+    <div class="register-heading text-center mb-3">
+        <h1 class="register-title">Create Student Profile</h1>
+        <p class="register-subtitle">Step-by-step portfolio creation journey.</p>
+    </div>
 
-<div class="card shadow-lg border-0 rounded-4">
-    <div class="card-body p-4">
-        <form asp-action="Register" method="post" enctype="multipart/form-data" class="row g-3">
-            @Html.AntiForgeryToken()
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+    <div class="register-stepper mb-4" id="registerStepper">
+        <div class="step-item step-active" data-step="1"><span class="step-no">1</span><span>Basic</span></div>
+        <div class="step-item" data-step="2"><span class="step-no">2</span><span>Education</span></div>
+        <div class="step-item" data-step="3"><span class="step-no">3</span><span>Documents</span></div>
+        <div class="step-item" data-step="4"><span class="step-no">4</span><span>Finish</span></div>
+    </div>
 
-            <div class="col-md-6">
-                <label asp-for="Name" class="form-label"></label>
-                <input asp-for="Name" class="form-control" />
-                <span asp-validation-for="Name" class="text-danger"></span>
-            </div>
-            <div class="col-md-6">
-                <label asp-for="Email" class="form-label"></label>
-                <input asp-for="Email" class="form-control" />
-                <span asp-validation-for="Email" class="text-danger"></span>
-            </div>
-            <div class="col-12">
-                <label asp-for="Address" class="form-label"></label>
-                <textarea asp-for="Address" class="form-control" rows="2"></textarea>
-                <span asp-validation-for="Address" class="text-danger"></span>
-            </div>
-            <div class="col-md-6">
-                <label asp-for="CollegeName" class="form-label"></label>
-                <input asp-for="CollegeName" class="form-control" />
-                <span asp-validation-for="CollegeName" class="text-danger"></span>
-            </div>
-            <div class="col-md-6">
-                <label asp-for="FieldOfStudy" class="form-label"></label>
-                <select asp-for="FieldOfStudy" asp-items="Model.FieldsOfStudyOptions" class="form-select">
-                    <option value="">Choose field</option>
-                </select>
-                <span asp-validation-for="FieldOfStudy" class="text-danger"></span>
-            </div>
-            <div class="col-md-6">
-                <label asp-for="JobRole" class="form-label"></label>
-                <select asp-for="JobRole" asp-items="Model.JobRolesOptions" class="form-select">
-                    <option value="">Choose job role</option>
-                </select>
-                <span asp-validation-for="JobRole" class="text-danger"></span>
-            </div>
-            <div class="col-md-6">
-                <label asp-for="Image" class="form-label"></label>
-                <input asp-for="Image" class="form-control" type="file" accept="image/*" />
-                <span asp-validation-for="Image" class="text-danger"></span>
-            </div>
-            <div class="col-md-4">
-                <label asp-for="DegreeCertificate" class="form-label"></label>
-                <input asp-for="DegreeCertificate" class="form-control" type="file" accept=".pdf,.doc,.docx,image/*" />
-                <span asp-validation-for="DegreeCertificate" class="text-danger"></span>
-            </div>
-            <div class="col-md-4">
-                <label asp-for="Marksheet" class="form-label"></label>
-                <input asp-for="Marksheet" class="form-control" type="file" accept=".pdf,.doc,.docx,image/*" />
-                <span asp-validation-for="Marksheet" class="text-danger"></span>
-            </div>
-            <div class="col-md-4">
-                <label asp-for="Certifications" class="form-label"></label>
-                <input asp-for="Certifications" class="form-control" type="file" accept=".pdf,.doc,.docx,image/*" />
-                <span asp-validation-for="Certifications" class="text-danger"></span>
-            </div>
-            <div class="col-12">
-                <label asp-for="Video" class="form-label"></label>
-                <input asp-for="Video" class="form-control" type="file" accept="video/*" />
-                <span asp-validation-for="Video" class="text-danger"></span>
-            </div>
+    <div class="register-card card border-0 shadow-sm">
+        <div class="card-body p-4">
+            <h2 class="step-title" id="stepTitle">Step 1 of 4: Basic Info</h2>
+            <form asp-action="Register" method="post" enctype="multipart/form-data" id="multiStepForm">
+                @Html.AntiForgeryToken()
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
 
-            <div class="col-12 d-flex gap-2">
-                <button type="submit" class="btn btn-linkedin px-4">Submit Registration</button>
-                <a asp-action="Index" class="btn btn-outline-secondary px-4">Back to Home</a>
-            </div>
-        </form>
+                <section class="step-pane active" data-step-pane="1">
+                    <div class="row g-3">
+                        <div class="col-md-4">
+                            <label class="form-label fw-semibold">Profile Image</label>
+                            <input asp-for="Image" id="Image" class="form-control" type="file" accept="image/*" />
+                            <span asp-validation-for="Image" class="text-danger"></span>
+                        </div>
+                        <div class="col-md-8">
+                            <label asp-for="Name" class="form-label fw-semibold"></label>
+                            <input asp-for="Name" class="form-control" />
+                            <span asp-validation-for="Name" class="text-danger"></span>
+
+                            <label asp-for="Email" class="form-label fw-semibold mt-2"></label>
+                            <input asp-for="Email" class="form-control" />
+                            <span asp-validation-for="Email" class="text-danger"></span>
+
+                            <label asp-for="Address" class="form-label fw-semibold mt-2"></label>
+                            <input asp-for="Address" class="form-control" />
+                            <span asp-validation-for="Address" class="text-danger"></span>
+                        </div>
+                    </div>
+                </section>
+
+                <section class="step-pane" data-step-pane="2">
+                    <div class="row g-3">
+                        <div class="col-md-6"><label asp-for="CollegeName" class="form-label"></label><input asp-for="CollegeName" class="form-control" /><span asp-validation-for="CollegeName" class="text-danger"></span></div>
+                        <div class="col-md-3"><label asp-for="FieldOfStudy" class="form-label"></label><select asp-for="FieldOfStudy" asp-items="Model.FieldsOfStudyOptions" class="form-select"><option value="">Select</option></select><span asp-validation-for="FieldOfStudy" class="text-danger"></span></div>
+                        <div class="col-md-3"><label asp-for="JobRole" class="form-label"></label><select asp-for="JobRole" asp-items="Model.JobRolesOptions" class="form-select"><option value="">Select</option></select><span asp-validation-for="JobRole" class="text-danger"></span></div>
+                        <div class="col-md-3"><label asp-for="Cgpa" class="form-label"></label><input asp-for="Cgpa" class="form-control" min="0" max="10" step="0.01" /><span asp-validation-for="Cgpa" class="text-danger"></span></div>
+                    </div>
+                </section>
+
+                <section class="step-pane" data-step-pane="3">
+                    <div class="row g-3">
+                        <div class="col-md-6"><label asp-for="Resume" class="form-label"></label><input asp-for="Resume" id="Resume" class="form-control" type="file" accept=".pdf,.doc,.docx" /><span asp-validation-for="Resume" class="text-danger"></span></div>
+                        <div class="col-md-6"><label asp-for="DegreeCertificate" class="form-label"></label><input asp-for="DegreeCertificate" id="DegreeCertificate" class="form-control" type="file" accept=".pdf,.doc,.docx,image/*" /><span asp-validation-for="DegreeCertificate" class="text-danger"></span></div>
+                        <div class="col-md-6"><label asp-for="Marksheet" class="form-label"></label><input asp-for="Marksheet" id="Marksheet" class="form-control" type="file" accept=".pdf,.doc,.docx,image/*" /><span asp-validation-for="Marksheet" class="text-danger"></span></div>
+                        <div class="col-md-6"><label asp-for="Certifications" class="form-label"></label><input asp-for="Certifications" id="Certifications" class="form-control" type="file" accept=".pdf,.doc,.docx,image/*" /><span asp-validation-for="Certifications" class="text-danger"></span></div>
+                    </div>
+                </section>
+
+                <section class="step-pane" data-step-pane="4">
+                    <div class="row g-3">
+                        <div class="col-md-6"><label asp-for="Video" class="form-label"></label><input asp-for="Video" id="Video" class="form-control" type="file" accept="video/*" /><span asp-validation-for="Video" class="text-danger"></span></div>
+                    </div>
+                    <div class="alert alert-info mt-3">Click Create Profile to finish.</div>
+                </section>
+
+                <div class="d-flex justify-content-between mt-3">
+                    <button type="button" class="btn btn-outline-secondary" id="prevBtn" disabled>Back</button>
+                    <button type="button" class="btn btn-gradient" id="nextBtn">Next</button>
+                    <button type="submit" class="btn btn-gradient d-none" id="submitBtn">Create Profile</button>
+                </div>
+            </form>
+        </div>
+        <div class="card-footer text-center" id="stepFooter">Step 1 of 4</div>
     </div>
 </div>
+
+@section Scripts {
+<script>
+(() => {
+ let s=1,t=4;
+ const req={1:['Image','Name','Email','Address'],2:['CollegeName','FieldOfStudy','JobRole','Cgpa'],3:['Resume','DegreeCertificate','Marksheet','Certifications'],4:[]};
+ const st=document.getElementById('stepTitle'),sf=document.getElementById('stepFooter'),p=document.getElementById('prevBtn'),n=document.getElementById('nextBtn'),sub=document.getElementById('submitBtn');
+ const refresh=()=>{document.querySelectorAll('.step-pane').forEach(x=>x.classList.toggle('active',+x.dataset.stepPane===s));document.querySelectorAll('#registerStepper .step-item').forEach(x=>x.classList.toggle('step-active',+x.dataset.step===s));st.textContent=`Step ${s} of ${t}`;sf.textContent=`Step ${s} of ${t}`;p.disabled=s===1;n.classList.toggle('d-none',s===t);sub.classList.toggle('d-none',s!==t)};
+ const ok=()=>{for(const id of req[s]){const f=document.getElementById(id);if(!f)continue;if(f.type==='file'){if(!f.files.length)return false;}else if(!f.value.trim())return false;}return true;};
+ n.onclick=()=>{if(!ok()) return alert('Please fill current step required fields'); if(s<t){s++;refresh();}};
+ p.onclick=()=>{if(s>1){s--;refresh();}};
+ refresh();
+})();
+</script>
+}

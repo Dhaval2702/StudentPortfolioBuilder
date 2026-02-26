@@ -1,0 +1,26 @@
+@model StudentPortfolioBuilder.ViewModels.AdminOnboardingViewModel
+@{ ViewData["Title"] = "Admin Onboarding"; }
+
+@if (TempData["SuccessMessage"] is string msg)
+{
+    <div class="alert alert-success">@msg</div>
+}
+
+<div class="card shadow-sm">
+    <div class="card-body">
+        <h2 class="mb-3">Admin Onboard HR + Company + Job</h2>
+        <form asp-action="Index" method="post" class="row g-3">
+            @Html.AntiForgeryToken()
+            <div class="col-md-6"><input asp-for="CompanyName" class="form-control" placeholder="Company Name" /></div>
+            <div class="col-md-6"><input asp-for="Industry" class="form-control" placeholder="Industry" /></div>
+            <div class="col-md-4"><input asp-for="HrName" class="form-control" placeholder="HR Name" /></div>
+            <div class="col-md-4"><input asp-for="HrEmail" class="form-control" placeholder="HR Email" /></div>
+            <div class="col-md-4"><input asp-for="HrPassword" class="form-control" placeholder="HR Password" /></div>
+            <div class="col-md-4"><input asp-for="JobTitle" class="form-control" placeholder="Job Title" /></div>
+            <div class="col-md-4"><input asp-for="JobField" class="form-control" placeholder="Job Field" /></div>
+            <div class="col-md-2"><input asp-for="JobLocation" class="form-control" placeholder="Location" /></div>
+            <div class="col-md-2"><input asp-for="Openings" class="form-control" placeholder="Openings" /></div>
+            <div class="col-12"><button class="btn btn-gradient">Onboard</button></div>
+        </form>
+    </div>
+</div>

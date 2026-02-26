@@ -1,0 +1,20 @@
+@model StudentPortfolioBuilder.ViewModels.LoginViewModel
+@{ ViewData["Title"] = "Login"; }
+
+<div class="auth-card card mx-auto shadow-sm">
+    <div class="card-body p-4">
+        <h2 class="mb-3">Login</h2>
+        <form asp-action="Login" method="post" class="d-grid gap-3">
+            @Html.AntiForgeryToken()
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input asp-for="Email" class="form-control" placeholder="Email" />
+            <span asp-validation-for="Email" class="text-danger"></span>
+            <input asp-for="Password" class="form-control" placeholder="Password" />
+            <span asp-validation-for="Password" class="text-danger"></span>
+            <button class="btn btn-gradient">Login</button>
+            <a asp-action="Register" class="small">Don't have account? Register</a>
+        </form>
+        <hr />
+        <small>Seed users: admin@studentportfolio.local / Admin@123, hr@studentportfolio.local / Hr@123, student@studentportfolio.local / Student@123</small>
+    </div>
+</div>
