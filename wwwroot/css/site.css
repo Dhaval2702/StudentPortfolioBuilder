@@ -309,3 +309,19 @@ body {
         grid-template-columns: 1fr;
     }
 }
+
+
+.step-pane {
+    display: none;
+}
+
+.step-pane.active {
+    display: block;
+}
+
+#multiStepForm .form-control:focus,
+#multiStepForm .form-select:focus {
+    border-color: #6ea2f4;
+    box-shadow: 0 0 0 0.2rem rgba(11, 94, 215, 0.12);
+}
+
