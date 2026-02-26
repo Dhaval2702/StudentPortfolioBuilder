@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.Data.Sqlite;
 using Microsoft.EntityFrameworkCore;
 using StudentPortfolioBuilder.Data;
 
@@ -38,7 +39,21 @@ app.MapControllerRoute(
 using (var scope = app.Services.CreateScope())
 {
     var db = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
+
     db.Database.EnsureCreated();
+
+    try
+    {
+        db.Database.ExecuteSqlRaw("SELECT 1 FROM Companies LIMIT 1;");
+        db.Database.ExecuteSqlRaw("SELECT 1 FROM AppUsers LIMIT 1;");
+        db.Database.ExecuteSqlRaw("SELECT 1 FROM JobPostings LIMIT 1;");
+    }
+    catch (SqliteException)
+    {
+        db.Database.EnsureDeleted();
+        db.Database.EnsureCreated();
+    }
+
     await SeedData.EnsureSeededAsync(db);
 }
 
