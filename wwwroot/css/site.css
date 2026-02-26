@@ -1,0 +1,126 @@
+:root {
+    --linkedin-blue: #0a66c2;
+    --linkedin-dark: #004182;
+    --linkedin-light: #e8f3ff;
+    --page-bg: #f3f2ef;
+    --text-dark: #1d2226;
+}
+
+body {
+    background: var(--page-bg);
+    color: var(--text-dark);
+    min-height: 100vh;
+}
+
+header {
+    background: linear-gradient(90deg, var(--linkedin-dark), var(--linkedin-blue));
+}
+
+.nav-link {
+    color: #eaf4ff !important;
+    font-weight: 500;
+}
+
+.nav-link:hover {
+    color: #ffffff !important;
+}
+
+.hero-section {
+    background: linear-gradient(120deg, #ffffff, var(--linkedin-light));
+}
+
+.filter-panel {
+    border-top: 4px solid var(--linkedin-blue) !important;
+}
+
+.btn-linkedin {
+    border: none;
+    color: #fff;
+    background: linear-gradient(90deg, var(--linkedin-blue), var(--linkedin-dark));
+}
+
+.btn-linkedin:hover {
+    opacity: 0.95;
+    color: #fff;
+}
+
+.linkedin-badge {
+    background: var(--linkedin-blue);
+}
+
+.portfolio-card {
+    position: relative;
+    overflow: hidden;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.portfolio-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 14px 32px rgba(10, 102, 194, 0.24) !important;
+}
+
+.portfolio-card img {
+    height: 190px;
+    object-fit: cover;
+}
+
+.profile-overlay {
+    position: absolute;
+    inset: 0;
+    background: rgba(10, 24, 45, 0.92);
+    color: #fff;
+    opacity: 0;
+    transition: opacity 0.25s ease;
+    z-index: 2;
+    font-size: 0.88rem;
+}
+
+.portfolio-card:hover .profile-overlay {
+    opacity: 1;
+}
+
+.profile-highlight {
+    border: 2px solid #f59e0b !important;
+}
+
+.video-badge {
+    background: #dc2626;
+}
+
+.cert-badge {
+    background: #15803d;
+}
+
+.tiny-note {
+    color: #6b7280;
+    font-size: 0.78rem;
+}
+
+.pagination .page-link {
+    color: var(--linkedin-dark);
+}
+
+.pagination .page-item.active .page-link {
+    background-color: var(--linkedin-blue);
+    border-color: var(--linkedin-blue);
+}
+
+.footer {
+    background-color: #ffffff;
+    border-top: 1px solid #d0d7de;
+}
+
+.footer-link {
+    color: var(--linkedin-blue);
+    text-decoration: none;
+}
+
+.footer-link:hover {
+    text-decoration: underline;
+}
+
+@media (max-width: 576px) {
+    .portfolio-card img {
+        height: 160px;
+    }
+}
