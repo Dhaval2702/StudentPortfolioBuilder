@@ -15,11 +15,14 @@ public class HomeController(ApplicationDbContext db) : Controller
     {
         var query = ApplyProfileFilters(db.StudentProfiles.AsNoTracking(), filters);
 
-        var featuredProfiles = await db.StudentProfiles.AsNoTracking()
+        var featuredProfiles = (await db.StudentProfiles.AsNoTracking()
+            .OrderByDescending(x => x.CreatedOn)
+            .Take(200)
+            .ToListAsync())
             .OrderByDescending(x => x.Cgpa)
             .ThenByDescending(x => x.CreatedOn)
             .Take(8)
-            .ToListAsync();
+            .ToList();
 
         var topCompanies = await db.Companies.AsNoTracking().OrderByDescending(x => x.JobPostings.Count).Take(6).ToListAsync();
         var trendingJobs = await db.JobPostings.AsNoTracking().Include(x => x.Company).OrderByDescending(x => x.CreatedOn).Take(8).ToListAsync();
@@ -51,8 +54,11 @@ public class HomeController(ApplicationDbContext db) : Controller
         if (page < 1) page = 1;
         var query = ApplyProfileFilters(db.StudentProfiles.AsNoTracking(), filters);
         var total = await query.CountAsync();
-        var profiles = await query.OrderByDescending(x => x.Cgpa).ThenByDescending(x => x.CreatedOn)
-            .Skip((page - 1) * pageSize).Take(pageSize).ToListAsync();
+        var orderedProfiles = (await query.OrderByDescending(x => x.CreatedOn).ToListAsync())
+            .OrderByDescending(x => x.Cgpa)
+            .ThenByDescending(x => x.CreatedOn)
+            .ToList();
+        var profiles = orderedProfiles.Skip((page - 1) * pageSize).Take(pageSize).ToList();
 
         return View(new ProfileListViewModel
         {
