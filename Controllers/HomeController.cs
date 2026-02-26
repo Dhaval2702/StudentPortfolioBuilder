@@ -21,7 +21,7 @@ public class HomeController(ApplicationDbContext db) : Controller
             .ToListAsync())
             .OrderByDescending(x => x.Cgpa)
             .ThenByDescending(x => x.CreatedOn)
-            .Take(8)
+            .Take(12)
             .ToList();
 
         if (featuredProfiles.Count == 0)
@@ -29,7 +29,7 @@ public class HomeController(ApplicationDbContext db) : Controller
             featuredProfiles = (await db.StudentProfiles.AsNoTracking().OrderByDescending(x => x.CreatedOn).Take(250).ToListAsync())
                 .OrderByDescending(x => x.Cgpa)
                 .ThenByDescending(x => x.CreatedOn)
-                .Take(8)
+                .Take(12)
                 .ToList();
         }
 
