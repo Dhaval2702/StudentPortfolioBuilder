@@ -2,76 +2,136 @@
 @{ ViewData["Title"] = "Home"; }
 
 <div class="row g-3">
-    <div class="col-lg-3">
-        <div class="filter-side p-3 rounded-4 h-100">
-            <h4 class="text-white mb-3">Find Talent by</h4>
-            <form method="get" asp-action="Index" class="d-grid gap-2">
-                <input asp-for="Filters.Name" class="form-control" placeholder="Search Roles..." />
+    <div class="col-xl-3">
+        <aside class="filter-side p-3 rounded-4 h-100">
+            <h4 class="text-white fw-bold mb-3">⋯ Find Talent by ⋯</h4>
+            <form method="get" asp-action="Index" class="d-grid gap-2 mb-3">
+                <input asp-for="Filters.Name" class="form-control" placeholder="Search roles..." />
                 <select asp-for="Filters.FieldOfStudy" asp-items="Model.FieldsOfStudy" class="form-select"><option value="">All Fields</option></select>
                 <select asp-for="Filters.JobRole" asp-items="Model.JobRoles" class="form-select"><option value="">All Roles</option></select>
                 <button class="btn btn-light fw-semibold">Apply Filters</button>
             </form>
-        </div>
+
+            <div class="text-white-50 small mb-2">Popular Categories</div>
+            <div class="d-grid gap-2">
+                @foreach (var cat in Model.CategoryCounts.Take(8))
+                {
+                    <div class="side-pill d-flex justify-content-between">
+                        <span>@cat.Key</span>
+                        <span class="text-info">●</span>
+                    </div>
+                }
+            </div>
+        </aside>
     </div>
 
-    <div class="col-lg-9">
-        <section class="hero-v2 p-4 rounded-4 mb-3">
-            <h2 class="hero-sub">Showcase Your Skills & Kickstart Your Career!</h2>
-            <a class="btn btn-light btn-lg mt-2" asp-action="Register">Create Your Portfolio</a>
+    <div class="col-xl-9">
+        <section class="hero-v2 p-4 rounded-4 mb-3 d-flex flex-column flex-lg-row justify-content-between align-items-center gap-3">
+            <div>
+                <h2 class="hero-sub mb-2">Showcase Your Skills &amp;<br />Kickstart Your Career!</h2>
+                <a class="btn btn-light btn-lg mt-2" asp-action="Register">Create Your Portfolio <i class="bi bi-arrow-right ms-1"></i></a>
+            </div>
+            <img class="hero-banner-img" src="https://images.unsplash.com/photo-1522202176988-66273c2fd55f?auto=format&fit=crop&w=640&q=80" alt="Students" />
         </section>
 
         <div class="stats-strip mb-3">
             <div><strong>@Model.TotalCount+</strong><span>Students</span></div>
-            <div><strong>@Model.CategoryCounts.Count+</strong><span>Colleges</span></div>
+            <div><strong>@Model.CategoryCounts.Count+</strong><span>Fields</span></div>
             <div><strong>@Model.RecruiterCount+</strong><span>Recruiters</span></div>
             <div><strong>@Model.JobCount+</strong><span>Jobs Posted</span></div>
         </div>
 
+        <form method="get" asp-action="Profiles" class="search-strip mb-3">
+            <div class="search-icon"><i class="bi bi-search"></i></div>
+            <input name="Name" value="@Model.Filters.Name" class="form-control" placeholder="Search student by name, skills, college..." />
+            <select name="FieldOfStudy" class="form-select">
+                <option value="">All Fields</option>
+                @foreach (var field in Model.FieldsOfStudy)
+                {
+                    <option value="@field.Value">@field.Text</option>
+                }
+            </select>
+            <select name="JobRole" class="form-select">
+                <option value="">All Roles</option>
+                @foreach (var role in Model.JobRoles)
+                {
+                    <option value="@role.Value">@role.Text</option>
+                }
+            </select>
+            <button class="btn btn-gradient px-4">Search</button>
+        </form>
+
+        <div class="category-chip-row mb-3">
+            <span class="fw-semibold me-2">Top Categories</span>
+            <a asp-action="Profiles" class="chip chip-active">All</a>
+            @foreach (var cat in Model.CategoryCounts.Take(6))
+            {
+                <a asp-action="Profiles" asp-route-fieldOfStudy="@cat.Key" class="chip">@cat.Key</a>
+            }
+        </div>
+
         <div class="d-flex justify-content-between align-items-center mb-2">
             <h3 class="section-title-sm mb-0">Featured Student Profiles</h3>
-            <a asp-action="Profiles" class="btn btn-sm btn-outline-primary">View All Profiles</a>
+            <a asp-action="Profiles" class="btn btn-sm btn-outline-primary">Browse All <i class="bi bi-arrow-right"></i></a>
         </div>
+
         <div class="row g-3 mb-3">
             @foreach (var p in Model.FeaturedProfiles)
             {
-                <div class="col-md-6 col-xl-3">
-                    <div class="card profile-tile h-100 @(p.IsTopRated ? "top-rated" : string.Empty)">
+                <div class="col-md-6 col-xxl-3">
+                    <article class="card profile-tile h-100 @(p.IsTopRated ? "top-rated" : string.Empty)">
                         <img src="@(p.ImagePath ?? "/images/default-avatar.svg")" class="tile-img" alt="@p.Name" />
                         <div class="card-body p-2">
-                            <div class="d-flex justify-content-between">
+                            <div class="d-flex justify-content-between align-items-start">
                                 <div class="fw-bold">@p.Name</div>
                                 <span class="badge bg-warning text-dark">@p.Cgpa</span>
                             </div>
                             <div class="small text-muted">@p.JobRole</div>
-                            <div class="small">@p.CollegeName</div>
+                            <div class="small"><i class="bi bi-geo-alt"></i> @p.Address</div>
+                            <div class="small mb-2"><i class="bi bi-building"></i> @p.CollegeName</div>
+
+                            <div class="d-flex gap-1 flex-wrap mb-2">
+                                <span class="skill-badge">@p.FieldOfStudy</span>
+                                <span class="skill-badge">@p.JobRole.Split(' ').FirstOrDefault()</span>
+                            </div>
+
+                            <div class="d-flex gap-2">
+                                <a asp-action="Profile" asp-route-id="@p.Id" class="btn btn-sm btn-primary flex-grow-1">View Profile</a>
+                                <a href="@p.ResumePath" class="btn btn-sm btn-outline-secondary" target="_blank"><i class="bi bi-download"></i></a>
+                            </div>
+
                             @if (p.IsTopRated)
                             {
-                                <div><span class="badge bg-success mt-1">Top Rated</span></div>
+                                <div class="mt-1"><span class="badge bg-success">Top Rated</span></div>
                             }
-                            <a asp-action="Profile" asp-route-id="@p.Id" class="btn btn-sm btn-primary w-100 mt-2">View Profile</a>
                         </div>
-                    </div>
+                    </article>
                 </div>
             }
         </div>
 
         <div class="row g-3">
-            <div class="col-md-6">
+            <div class="col-lg-6">
                 <h4 class="section-title-sm">Browse by Category</h4>
-                <div class="panel-card">
+                <div class="panel-card compact-list">
                     @foreach (var cat in Model.CategoryCounts)
                     {
-                        <div class="d-flex justify-content-between py-1 border-bottom"><span>@cat.Key</span><span>@cat.Value + Profiles</span></div>
+                        <a asp-action="Profiles" asp-route-fieldOfStudy="@cat.Key" class="d-flex justify-content-between py-1 border-bottom text-decoration-none text-dark">
+                            <span>@cat.Key</span><span>@cat.Value + Profiles</span>
+                        </a>
                     }
                 </div>
             </div>
-            <div class="col-md-6">
+            <div class="col-lg-6">
                 <h4 class="section-title-sm">Recent Placements</h4>
-                <div class="panel-card">
+                <div class="panel-card compact-list">
                     @foreach (var j in Model.TrendingJobs)
                     {
                         <div class="d-flex justify-content-between py-1 border-bottom">
-                            <div><div>@j.Title</div><small class="text-muted">@j.Company?.Name - @j.Location</small></div>
+                            <div>
+                                <div>@j.Title</div>
+                                <small class="text-muted">@j.Company?.Name · @j.Location</small>
+                            </div>
                             <span class="badge bg-primary">@j.Openings Open</span>
                         </div>
                     }
