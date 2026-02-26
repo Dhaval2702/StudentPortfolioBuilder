@@ -3,106 +3,178 @@
     ViewData["Title"] = "Create Profile";
 }
 
-<div class="register-shell py-2 py-lg-4">
-    <div class="register-card card border-0 shadow-sm mx-auto">
-        <div class="card-header bg-white border-bottom-0 pt-4 pb-3 px-4 px-lg-5">
-            <h1 class="h2 mb-0 fw-bold text-primary">Create Student Profile</h1>
+<div class="register-page">
+    <div class="register-heading text-center mb-3">
+        <h1 class="register-title">Create Student Profile</h1>
+        <p class="register-subtitle">Build your portfolio by entering your details and uploading documents to showcase your achievements.</p>
+    </div>
+
+    <div class="register-stepper mb-4">
+        <div class="step-item step-active"><span class="step-no">1</span><span>Basic Info</span></div>
+        <div class="step-item"><span class="step-no">2</span><span>Education &amp; Career</span></div>
+        <div class="step-item"><span class="step-no">3</span><span>Upload Documents</span></div>
+        <div class="step-item"><span class="step-no">4</span><span>Video Resume</span></div>
+    </div>
+
+    <div class="register-layout">
+        <div class="register-illustration d-none d-xl-flex">
+            <img src="https://images.unsplash.com/photo-1531482615713-2afd69097998?auto=format&fit=crop&w=700&q=80" alt="Student illustration" />
         </div>
 
-        <div class="register-intro px-4 px-lg-5 py-3 border-top border-bottom">
-            <p class="mb-0 fs-5 text-secondary">Build your portfolio by entering your details and uploading documents and video resume.</p>
-        </div>
+        <div class="register-card card border-0 shadow-sm">
+            <div class="card-body p-4 p-lg-5">
+                <h2 class="step-title">Step 1 of 4: Basic Info</h2>
+                <hr class="mt-2 mb-4" />
 
-        <div class="card-body p-4 p-lg-5 pt-3">
-            <form asp-action="Register" method="post" enctype="multipart/form-data" class="create-form-layout">
-                @Html.AntiForgeryToken()
-                <div asp-validation-summary="ModelOnly" class="text-danger mb-2"></div>
+                <form asp-action="Register" method="post" enctype="multipart/form-data" class="create-form-layout">
+                    @Html.AntiForgeryToken()
+                    <div asp-validation-summary="ModelOnly" class="text-danger mb-2"></div>
 
-                <div class="row g-3 align-items-start mb-3">
-                    <div class="col-md-3 text-center">
-                        <div class="avatar-placeholder mb-2">
-                            <i class="bi bi-person-fill"></i>
+                    <div class="row g-4 align-items-start mb-4">
+                        <div class="col-md-3">
+                            <div class="avatar-box text-center">
+                                <div class="avatar-placeholder mb-2" id="avatarPreviewWrap">
+                                    <i class="bi bi-person-fill" id="avatarIcon"></i>
+                                    <img id="avatarPreview" alt="Selected profile" class="d-none" />
+                                </div>
+                                <button class="btn btn-gradient w-100" type="button" data-pick-file="Image">Upload Photo</button>
+                                <input asp-for="Image" id="Image" class="d-none" type="file" accept="image/*" />
+                                <small class="text-muted file-name" data-file-name="Image">No file selected</small>
+                                <span asp-validation-for="Image" class="text-danger d-block small mt-1"></span>
+                            </div>
                         </div>
-                        <label for="Image" class="btn btn-gradient w-100">Upload Photo</label>
-                        <input asp-for="Image" class="d-none" type="file" accept="image/*" />
-                        <span asp-validation-for="Image" class="text-danger d-block small mt-1"></span>
+
+                        <div class="col-md-9">
+                            <div class="mb-3">
+                                <label asp-for="Name" class="form-label fw-semibold"></label>
+                                <input asp-for="Name" class="form-control form-control-lg" />
+                                <span asp-validation-for="Name" class="text-danger"></span>
+                            </div>
+
+                            <div>
+                                <label asp-for="Address" class="form-label fw-semibold"></label>
+                                <input asp-for="Address" class="form-control form-control-lg" />
+                                <span asp-validation-for="Address" class="text-danger"></span>
+                            </div>
+                        </div>
                     </div>
 
-                    <div class="col-md-9">
-                        <div class="mb-3">
-                            <label asp-for="Name" class="form-label fw-semibold fs-4"></label>
-                            <input asp-for="Name" class="form-control form-control-lg" />
-                            <span asp-validation-for="Name" class="text-danger"></span>
-                        </div>
-
-                        <div class="mb-3">
-                            <label asp-for="Email" class="form-label fw-semibold fs-4"></label>
+                    <div class="row g-3 mb-3">
+                        <div class="col-md-6">
+                            <label asp-for="Email" class="form-label fw-semibold"></label>
                             <input asp-for="Email" class="form-control form-control-lg" />
                             <span asp-validation-for="Email" class="text-danger"></span>
                         </div>
-
-                        <div>
-                            <label asp-for="Address" class="form-label fw-semibold fs-4"></label>
-                            <input asp-for="Address" class="form-control form-control-lg" />
-                            <span asp-validation-for="Address" class="text-danger"></span>
+                        <div class="col-md-6">
+                            <label asp-for="CollegeName" class="form-label fw-semibold"></label>
+                            <input asp-for="CollegeName" class="form-control form-control-lg" />
+                            <span asp-validation-for="CollegeName" class="text-danger"></span>
                         </div>
                     </div>
-                </div>
 
-                <div class="mb-3">
-                    <label asp-for="CollegeName" class="form-label fw-semibold fs-3"></label>
-                    <input asp-for="CollegeName" class="form-control form-control-lg" />
-                    <span asp-validation-for="CollegeName" class="text-danger"></span>
-                </div>
+                    <div class="row g-3 mb-4">
+                        <div class="col-md-6">
+                            <label asp-for="FieldOfStudy" class="form-label fw-semibold"></label>
+                            <select asp-for="FieldOfStudy" asp-items="Model.FieldsOfStudyOptions" class="form-select form-select-lg">
+                                <option value="">Select your field</option>
+                            </select>
+                            <span asp-validation-for="FieldOfStudy" class="text-danger"></span>
+                        </div>
+                        <div class="col-md-6">
+                            <label asp-for="JobRole" class="form-label fw-semibold"></label>
+                            <select asp-for="JobRole" asp-items="Model.JobRolesOptions" class="form-select form-select-lg">
+                                <option value="">Select career role</option>
+                            </select>
+                            <span asp-validation-for="JobRole" class="text-danger"></span>
+                        </div>
+                    </div>
 
-                <div class="mb-3">
-                    <label asp-for="FieldOfStudy" class="form-label fw-semibold fs-3">Select Your Career Field:</label>
-                    <select asp-for="FieldOfStudy" asp-items="Model.FieldsOfStudyOptions" class="form-select form-select-lg">
-                        <option value="">Computer Science</option>
-                    </select>
-                    <span asp-validation-for="FieldOfStudy" class="text-danger"></span>
-                </div>
+                    <div class="upload-list mb-4">
+                        <div class="upload-row">
+                            <label asp-for="DegreeCertificate" class="mb-0 fw-semibold"></label>
+                            <div class="upload-actions">
+                                <button type="button" class="btn btn-gradient px-4" data-pick-file="DegreeCertificate">Upload</button>
+                                <input asp-for="DegreeCertificate" id="DegreeCertificate" class="d-none" type="file" accept=".pdf,.doc,.docx,image/*" />
+                                <small class="text-muted file-name" data-file-name="DegreeCertificate">No file selected</small>
+                            </div>
+                        </div>
+                        <span asp-validation-for="DegreeCertificate" class="text-danger small d-block mb-2"></span>
 
-                <div class="mb-3">
-                    <label asp-for="JobRole" class="form-label fw-semibold fs-3"></label>
-                    <select asp-for="JobRole" asp-items="Model.JobRolesOptions" class="form-select form-select-lg">
-                        <option value="">Computer Science</option>
-                    </select>
-                    <span asp-validation-for="JobRole" class="text-danger"></span>
-                </div>
+                        <div class="upload-row">
+                            <label asp-for="Marksheet" class="mb-0 fw-semibold"></label>
+                            <div class="upload-actions">
+                                <button type="button" class="btn btn-gradient px-4" data-pick-file="Marksheet">Upload</button>
+                                <input asp-for="Marksheet" id="Marksheet" class="d-none" type="file" accept=".pdf,.doc,.docx,image/*" />
+                                <small class="text-muted file-name" data-file-name="Marksheet">No file selected</small>
+                            </div>
+                        </div>
+                        <span asp-validation-for="Marksheet" class="text-danger small d-block mb-2"></span>
 
-                <div class="upload-row d-flex justify-content-between align-items-center py-2 border-top">
-                    <label asp-for="DegreeCertificate" class="fw-semibold fs-3 mb-0"></label>
-                    <label for="DegreeCertificate" class="btn btn-gradient px-4">Upload</label>
-                    <input asp-for="DegreeCertificate" class="d-none" type="file" accept=".pdf,.doc,.docx,image/*" />
-                    <span asp-validation-for="DegreeCertificate" class="text-danger small"></span>
-                </div>
+                        <div class="upload-row">
+                            <label asp-for="Certifications" class="mb-0 fw-semibold"></label>
+                            <div class="upload-actions">
+                                <button type="button" class="btn btn-gradient px-4" data-pick-file="Certifications">Upload</button>
+                                <input asp-for="Certifications" id="Certifications" class="d-none" type="file" accept=".pdf,.doc,.docx,image/*" />
+                                <small class="text-muted file-name" data-file-name="Certifications">No file selected</small>
+                            </div>
+                        </div>
+                        <span asp-validation-for="Certifications" class="text-danger small d-block mb-2"></span>
 
-                <div class="upload-row d-flex justify-content-between align-items-center py-2 border-top">
-                    <label asp-for="Marksheet" class="fw-semibold fs-3 mb-0"></label>
-                    <label for="Marksheet" class="btn btn-gradient px-4">Upload</label>
-                    <input asp-for="Marksheet" class="d-none" type="file" accept=".pdf,.doc,.docx,image/*" />
-                    <span asp-validation-for="Marksheet" class="text-danger small"></span>
-                </div>
+                        <div class="upload-row">
+                            <label asp-for="Video" class="mb-0 fw-semibold">Video Resume (Optional)</label>
+                            <div class="upload-actions">
+                                <button type="button" class="btn btn-gradient px-4" data-pick-file="Video">Upload</button>
+                                <input asp-for="Video" id="Video" class="d-none" type="file" accept="video/*" />
+                                <small class="text-muted file-name" data-file-name="Video">No file selected</small>
+                            </div>
+                        </div>
+                        <span asp-validation-for="Video" class="text-danger small d-block"></span>
+                    </div>
 
-                <div class="upload-row d-flex justify-content-between align-items-center py-2 border-top">
-                    <label asp-for="Certifications" class="fw-semibold fs-3 mb-0"></label>
-                    <label for="Certifications" class="btn btn-gradient px-4">Upload</label>
-                    <input asp-for="Certifications" class="d-none" type="file" accept=".pdf,.doc,.docx,image/*" />
-                    <span asp-validation-for="Certifications" class="text-danger small"></span>
-                </div>
-
-                <div class="upload-row d-flex justify-content-between align-items-center py-2 border-top border-bottom mb-3">
-                    <label asp-for="Video" class="fw-semibold fs-3 mb-0">Video Resume (Optional)</label>
-                    <label for="Video" class="btn btn-gradient px-4">Upload</label>
-                    <input asp-for="Video" class="d-none" type="file" accept="video/*" />
-                    <span asp-validation-for="Video" class="text-danger small"></span>
-                </div>
-
-                <div class="d-flex justify-content-end">
-                    <button type="submit" class="btn btn-gradient btn-lg px-5">Create Profile</button>
-                </div>
-            </form>
+                    <div class="register-actions d-flex justify-content-between">
+                        <a asp-action="Index" class="btn btn-outline-secondary btn-lg px-4"><i class="bi bi-arrow-left me-2"></i>Back</a>
+                        <button type="submit" class="btn btn-gradient btn-lg px-5">Create Profile</button>
+                    </div>
+                </form>
+            </div>
+            <div class="card-footer text-center py-3 step-footer">Step 1 of 4</div>
         </div>
     </div>
 </div>
+
+@section Scripts {
+    <script>
+        (() => {
+            document.querySelectorAll('[data-pick-file]').forEach(btn => {
+                btn.addEventListener('click', () => {
+                    const id = btn.getAttribute('data-pick-file');
+                    const input = document.getElementById(id);
+                    if (input) input.click();
+                });
+            });
+
+            const updateFileName = (input) => {
+                const target = document.querySelector(`[data-file-name="${input.id}"]`);
+                if (target) {
+                    target.textContent = input.files && input.files.length ? input.files[0].name : 'No file selected';
+                }
+            };
+
+            ['Image', 'DegreeCertificate', 'Marksheet', 'Certifications', 'Video'].forEach(id => {
+                const input = document.getElementById(id);
+                if (!input) return;
+                input.addEventListener('change', () => {
+                    updateFileName(input);
+
+                    if (id === 'Image' && input.files && input.files[0]) {
+                        const preview = document.getElementById('avatarPreview');
+                        const icon = document.getElementById('avatarIcon');
+                        preview.src = URL.createObjectURL(input.files[0]);
+                        preview.classList.remove('d-none');
+                        icon.classList.add('d-none');
+                    }
+                });
+            });
+        })();
+    </script>
+}
