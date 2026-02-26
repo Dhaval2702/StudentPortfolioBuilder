@@ -35,6 +35,12 @@
                             <span asp-validation-for="Name" class="text-danger"></span>
                         </div>
 
+                        <div class="mb-3">
+                            <label asp-for="Email" class="form-label fw-semibold fs-4"></label>
+                            <input asp-for="Email" class="form-control form-control-lg" />
+                            <span asp-validation-for="Email" class="text-danger"></span>
+                        </div>
+
                         <div>
                             <label asp-for="Address" class="form-label fw-semibold fs-4"></label>
                             <input asp-for="Address" class="form-control form-control-lg" />
@@ -69,24 +75,28 @@
                     <label asp-for="DegreeCertificate" class="fw-semibold fs-3 mb-0"></label>
                     <label for="DegreeCertificate" class="btn btn-gradient px-4">Upload</label>
                     <input asp-for="DegreeCertificate" class="d-none" type="file" accept=".pdf,.doc,.docx,image/*" />
+                    <span asp-validation-for="DegreeCertificate" class="text-danger small"></span>
                 </div>
 
                 <div class="upload-row d-flex justify-content-between align-items-center py-2 border-top">
                     <label asp-for="Marksheet" class="fw-semibold fs-3 mb-0"></label>
                     <label for="Marksheet" class="btn btn-gradient px-4">Upload</label>
                     <input asp-for="Marksheet" class="d-none" type="file" accept=".pdf,.doc,.docx,image/*" />
+                    <span asp-validation-for="Marksheet" class="text-danger small"></span>
                 </div>
 
                 <div class="upload-row d-flex justify-content-between align-items-center py-2 border-top">
                     <label asp-for="Certifications" class="fw-semibold fs-3 mb-0"></label>
                     <label for="Certifications" class="btn btn-gradient px-4">Upload</label>
                     <input asp-for="Certifications" class="d-none" type="file" accept=".pdf,.doc,.docx,image/*" />
+                    <span asp-validation-for="Certifications" class="text-danger small"></span>
                 </div>
 
                 <div class="upload-row d-flex justify-content-between align-items-center py-2 border-top border-bottom mb-3">
                     <label asp-for="Video" class="fw-semibold fs-3 mb-0">Video Resume (Optional)</label>
                     <label for="Video" class="btn btn-gradient px-4">Upload</label>
                     <input asp-for="Video" class="d-none" type="file" accept="video/*" />
+                    <span asp-validation-for="Video" class="text-danger small"></span>
                 </div>
 
                 <div class="d-flex justify-content-end">
