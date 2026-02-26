@@ -11,6 +11,11 @@ public class HomePageViewModel
     public List<StudentProfile> BrowseProfiles { get; set; } = new();
     public List<SelectListItem> FieldsOfStudy { get; set; } = new();
     public List<SelectListItem> JobRoles { get; set; } = new();
+    public List<Company> TopCompanies { get; set; } = new();
+    public List<JobPosting> TrendingJobs { get; set; } = new();
+    public Dictionary<string, int> CategoryCounts { get; set; } = new();
+    public int RecruiterCount { get; set; }
+    public int JobCount { get; set; }
     public int CurrentPage { get; set; } = 1;
     public int PageSize { get; set; } = 12;
     public int TotalCount { get; set; }

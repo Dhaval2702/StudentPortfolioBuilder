@@ -1,0 +1,16 @@
+@model StudentPortfolioBuilder.ViewModels.DashboardViewModel
+@{ ViewData["Title"] = "Dashboard"; }
+
+<h2 class="mb-3">Welcome @Model.UserName</h2>
+<div class="alert alert-info">Role: <strong>@Model.Role</strong></div>
+
+@if (Model.Role == "Admin")
+{
+    <a asp-controller="Admin" asp-action="Index" class="btn btn-gradient mb-3">Open Admin Onboarding</a>
+}
+
+<div class="row g-3">
+    <div class="col-md-4"><div class="panel-card"><h5>Companies</h5><p class="display-6">@Model.Companies.Count</p></div></div>
+    <div class="col-md-4"><div class="panel-card"><h5>Jobs</h5><p class="display-6">@Model.Jobs.Count</p></div></div>
+    <div class="col-md-4"><div class="panel-card"><h5>HR Users</h5><p class="display-6">@Model.HrUsers.Count</p></div></div>
+</div>
