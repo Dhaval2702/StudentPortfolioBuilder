@@ -8,13 +8,18 @@ body { background:#edf2fb; color:#1f2937; }
 .filter-side{background:linear-gradient(180deg,#06285e,#0a3f8f);box-shadow:0 10px 24px rgba(9,37,86,.24)}
 .side-pill{background:rgba(255,255,255,.09);color:#e9f2ff;border-radius:.6rem;padding:.4rem .6rem;font-size:.9rem}
 
-.hero-v2{color:#fff;background:linear-gradient(110deg,#0c1f69,#0f4fbf);box-shadow:0 10px 24px rgba(7,35,96,.2)}
-.hero-sub{font-size:2.4rem;font-weight:800;line-height:1.15;max-width:640px}
-.hero-banner-img{width:430px;height:190px;object-fit:cover;border-radius:18px;border:2px solid rgba(255,255,255,.18)}
+.hero-v2{color:#fff;background-image:linear-gradient(95deg, rgba(6,34,92,.92) 0%, rgba(8,77,172,.75) 55%, rgba(9,117,201,.25) 100%), url("https://images.unsplash.com/photo-1522202176988-66273c2fd55f?auto=format&fit=crop&w=1400&q=80");background-size:cover;background-position:center;box-shadow:0 10px 24px rgba(7,35,96,.2);min-height:210px;display:flex;align-items:center}
+.hero-content-wrap{max-width:58%}
+.hero-sub{font-size:2.4rem;font-weight:800;line-height:1.15;max-width:640px;text-shadow:0 3px 12px rgba(0,0,0,.25)}
 
 .stats-strip{display:grid;grid-template-columns:repeat(4,1fr);gap:.8rem}
-.stat-card{background:#fff;border-radius:1rem;padding:.7rem .85rem;display:flex;gap:.7rem;align-items:center;box-shadow:0 4px 16px rgba(12,42,97,.08);position:relative;overflow:hidden}
-.stat-card::after{content:"";position:absolute;right:-8px;bottom:-18px;width:90px;height:90px;background:radial-gradient(circle,#eceff7 0,#fff 70%);opacity:.9}
+.stat-card{background:#fff;border-radius:1rem;padding:.7rem .85rem;box-shadow:0 4px 16px rgba(12,42,97,.08);position:relative;overflow:hidden}
+.stat-content{position:relative;z-index:2;display:flex;gap:.7rem;align-items:center}
+.stat-card::after{content:"";position:absolute;right:-8px;bottom:-18px;width:110px;height:110px;opacity:.95;z-index:1}
+.students::after{background:radial-gradient(circle,#ffe7c4 0,#fff 70%)}
+.colleges::after{background:radial-gradient(circle,#dcfce7 0,#fff 70%)}
+.recruiters::after{background:radial-gradient(circle,#f3e8ff 0,#fff 70%)}
+.jobs::after{background:radial-gradient(circle,#ffedd5 0,#fff 70%)}
 .stat-icon{width:48px;height:48px;display:grid;place-items:center;border-radius:50%;font-size:1.35rem;background:#eef4ff}
 .students .stat-icon{color:#f59e0b}.colleges .stat-icon{color:#22c55e}.recruiters .stat-icon{color:#a855f7}.jobs .stat-icon{color:#f59e0b}
 .stat-card strong{font-size:2rem;line-height:1;color:#1f3765}.stat-card span{font-size:1rem}
@@ -49,5 +54,5 @@ body { background:#edf2fb; color:#1f2937; }
 .step-item{background:#dfe8f7;color:#415273;padding:.9rem 1.2rem;display:flex;gap:.5rem;font-weight:600}.step-active{background:linear-gradient(90deg,#0b5ed7,#0a49aa);color:#fff}.step-no{width:28px;height:28px;border-radius:50%;background:rgba(255,255,255,.92);color:#22447d;display:grid;place-items:center;font-weight:700}
 .register-card{border-radius:14px;overflow:hidden}.step-title{font-size:2rem;color:#263f76;font-weight:700}.step-footer{background:#edf1f9;color:#33476f;font-weight:700}.step-pane{display:none}.step-pane.active{display:block}
 
-@media (max-width:1200px){.search-strip{grid-template-columns:36px 1fr 1fr;}.search-strip select:nth-of-type(2){grid-column:2}.search-strip button{grid-column:3}.hero-sub{font-size:2rem}.hero-banner-img{width:330px}}
-@media (max-width:768px){.hero-sub{font-size:1.35rem}.hero-banner-img{width:100%;height:150px}.stats-strip{grid-template-columns:1fr 1fr}.search-strip{grid-template-columns:1fr}.search-strip .search-icon{display:none}.register-stepper{grid-template-columns:1fr}}
+@media (max-width:1200px){.search-strip{grid-template-columns:36px 1fr 1fr;}.search-strip select:nth-of-type(2){grid-column:2}.search-strip button{grid-column:3}.hero-sub{font-size:2rem}.hero-content-wrap{max-width:65%}}
+@media (max-width:768px){.hero-sub{font-size:1.35rem}.hero-content-wrap{max-width:100%}.stats-strip{grid-template-columns:1fr 1fr}.search-strip{grid-template-columns:1fr}.search-strip .search-icon{display:none}.register-stepper{grid-template-columns:1fr}}
