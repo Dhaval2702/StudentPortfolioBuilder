@@ -1,0 +1,40 @@
+@model StudentPortfolioBuilder.Models.StudentProfile
+@{
+    ViewData["Title"] = "Profile";
+}
+
+<div class="card border-0 shadow-sm rounded-4 overflow-hidden">
+    <div class="row g-0">
+        <div class="col-md-4 profile-side p-4 text-center text-white">
+            <img src="@(Model.ImagePath ?? "/images/default-avatar.svg")" class="profile-image mb-3" alt="@Model.Name" />
+            <h1 class="h3 fw-bold">@Model.Name</h1>
+            <p class="mb-1"><i class="bi bi-briefcase-fill me-2"></i>@Model.JobRole</p>
+            <p class="mb-0"><i class="bi bi-mortarboard-fill me-2"></i>@Model.FieldOfStudy</p>
+        </div>
+        <div class="col-md-8 p-4 p-lg-5">
+            <h2 class="h4 text-primary fw-bold mb-3">Student Portfolio Details</h2>
+            <div class="row g-3 mb-4">
+                <div class="col-sm-6"><strong>Email:</strong> @(string.IsNullOrWhiteSpace(Model.Email) ? "N/A" : Model.Email)</div>
+                <div class="col-sm-6"><strong>College:</strong> @Model.CollegeName</div>
+                <div class="col-12"><strong>Address:</strong> @Model.Address</div>
+                <div class="col-sm-6"><strong>Created:</strong> @Model.CreatedOn.ToString("dd MMM yyyy")</div>
+                <div class="col-sm-6"><strong>Career Goal:</strong> @Model.JobRole</div>
+            </div>
+
+            <div class="d-flex flex-wrap gap-2 mb-4">
+                <a class="btn btn-outline-primary" href="@Model.DegreeCertificatePath" target="_blank"><i class="bi bi-file-earmark-text me-1"></i>Degree</a>
+                <a class="btn btn-outline-success" href="@Model.MarksheetPath" target="_blank"><i class="bi bi-journal-check me-1"></i>Marksheet</a>
+                @if (Model.HasCertifications)
+                {
+                    <a class="btn btn-outline-warning" href="@Model.CertificationsPath" target="_blank"><i class="bi bi-patch-check me-1"></i>Certifications</a>
+                }
+                @if (Model.HasVideo)
+                {
+                    <a class="btn btn-outline-danger" href="@Model.VideoPath" target="_blank"><i class="bi bi-camera-reels me-1"></i>Video Resume</a>
+                }
+            </div>
+
+            <a asp-action="Index" class="btn btn-gradient"><i class="bi bi-arrow-left me-1"></i>Back to Browse Profiles</a>
+        </div>
+    </div>
+</div>

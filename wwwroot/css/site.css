@@ -1,126 +1,98 @@
 :root {
-    --linkedin-blue: #0a66c2;
-    --linkedin-dark: #004182;
-    --linkedin-light: #e8f3ff;
-    --page-bg: #f3f2ef;
-    --text-dark: #1d2226;
+    --primary-500: #0b5ed7;
+    --primary-700: #084298;
+    --surface: #f1f5fb;
 }
 
 body {
-    background: var(--page-bg);
-    color: var(--text-dark);
-    min-height: 100vh;
+    background: #eef3fb;
+    color: #1f2937;
 }
 
-header {
-    background: linear-gradient(90deg, var(--linkedin-dark), var(--linkedin-blue));
+.app-header {
+    background: linear-gradient(90deg, #155ec7, #0b5ed7);
 }
 
-.nav-link {
-    color: #eaf4ff !important;
-    font-weight: 500;
+.navbar .nav-link {
+    color: #e8f0ff !important;
+    font-weight: 600;
 }
 
-.nav-link:hover {
-    color: #ffffff !important;
+.hero-banner {
+    background: linear-gradient(120deg, #ffffff 45%, #e6f0ff 100%);
 }
 
-.hero-section {
-    background: linear-gradient(120deg, #ffffff, var(--linkedin-light));
-}
-
-.filter-panel {
-    border-top: 4px solid var(--linkedin-blue) !important;
-}
-
-.btn-linkedin {
-    border: none;
-    color: #fff;
-    background: linear-gradient(90deg, var(--linkedin-blue), var(--linkedin-dark));
-}
-
-.btn-linkedin:hover {
-    opacity: 0.95;
-    color: #fff;
-}
-
-.linkedin-badge {
-    background: var(--linkedin-blue);
-}
-
-.portfolio-card {
-    position: relative;
-    overflow: hidden;
-    transition: transform 0.2s ease, box-shadow 0.2s ease;
-}
-
-.portfolio-card:hover {
-    transform: translateY(-4px);
-    box-shadow: 0 14px 32px rgba(10, 102, 194, 0.24) !important;
-}
-
-.portfolio-card img {
+.hero-image {
+    width: 260px;
     height: 190px;
     object-fit: cover;
 }
 
-.profile-overlay {
-    position: absolute;
-    inset: 0;
-    background: rgba(10, 24, 45, 0.92);
+.section-title {
+    font-size: 2rem;
+    font-weight: 700;
+    color: #1d3b72;
+    margin-bottom: 1rem;
+}
+
+.btn-gradient {
+    border: none;
     color: #fff;
-    opacity: 0;
-    transition: opacity 0.25s ease;
-    z-index: 2;
-    font-size: 0.88rem;
+    background: linear-gradient(90deg, var(--primary-500), var(--primary-700));
 }
 
-.portfolio-card:hover .profile-overlay {
-    opacity: 1;
+.btn-gradient:hover {
+    color: #fff;
+    opacity: 0.95;
 }
 
-.profile-highlight {
-    border: 2px solid #f59e0b !important;
+.featured-card {
+    border-radius: 1rem;
 }
 
-.video-badge {
-    background: #dc2626;
+.featured-avatar {
+    width: 96px;
+    height: 96px;
+    border-radius: 0.75rem;
+    object-fit: cover;
 }
 
-.cert-badge {
-    background: #15803d;
+.browse-card {
+    border-radius: 0.75rem;
+    transition: transform 0.15s ease, box-shadow 0.15s ease;
 }
 
-.tiny-note {
-    color: #6b7280;
-    font-size: 0.78rem;
+.browse-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 0.5rem 1rem rgba(11, 94, 215, 0.18) !important;
 }
 
-.pagination .page-link {
-    color: var(--linkedin-dark);
+.browse-avatar {
+    width: 64px;
+    height: 64px;
+    border-radius: 0.6rem;
+    object-fit: cover;
 }
 
-.pagination .page-item.active .page-link {
-    background-color: var(--linkedin-blue);
-    border-color: var(--linkedin-blue);
+.sticky-form {
+    position: sticky;
+    top: 92px;
 }
 
-.footer {
-    background-color: #ffffff;
-    border-top: 1px solid #d0d7de;
+.profile-side {
+    background: linear-gradient(180deg, #155ec7, #0a3f8f);
 }
 
-.footer-link {
-    color: var(--linkedin-blue);
-    text-decoration: none;
+.profile-image {
+    width: 180px;
+    height: 180px;
+    border-radius: 1rem;
+    object-fit: cover;
+    border: 4px solid rgba(255, 255, 255, 0.5);
 }
 
-.footer-link:hover {
-    text-decoration: underline;
-}
-
-@media (max-width: 576px) {
-    .portfolio-card img {
-        height: 160px;
+@media (max-width: 1200px) {
+    .sticky-form {
+        position: static;
     }
 }

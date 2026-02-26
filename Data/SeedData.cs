@@ -6,9 +6,16 @@ public static class SeedData
 {
     public static async Task EnsureSeededAsync(ApplicationDbContext context)
     {
-        if (context.StudentProfiles.Any())
+        var existingCount = context.StudentProfiles.Count();
+        if (existingCount == 100)
         {
             return;
+        }
+
+        if (existingCount > 0)
+        {
+            context.StudentProfiles.RemoveRange(context.StudentProfiles);
+            await context.SaveChangesAsync();
         }
 
         var random = new Random(42);
@@ -19,8 +26,8 @@ public static class SeedData
         var fields = HomeLookup.FieldsOfStudy;
         var jobs = HomeLookup.JobRoles;
 
-        var profiles = new List<StudentProfile>(1000);
-        for (var i = 1; i <= 1000; i++)
+        var profiles = new List<StudentProfile>(100);
+        for (var i = 1; i <= 100; i++)
         {
             var first = firstNames[random.Next(firstNames.Length)];
             var last = lastNames[random.Next(lastNames.Length)];
@@ -30,6 +37,7 @@ public static class SeedData
             var role = jobs[random.Next(jobs.Count)];
             var hasVideo = random.NextDouble() > 0.65;
             var hasCert = random.NextDouble() > 0.25;
+            var avatarId = random.Next(1, 70);
 
             profiles.Add(new StudentProfile
             {
@@ -39,12 +47,12 @@ public static class SeedData
                 CollegeName = college,
                 FieldOfStudy = field,
                 JobRole = role,
-                ImagePath = "/images/default-avatar.svg",
+                ImagePath = $"https://i.pravatar.cc/300?img={avatarId}",
                 DegreeCertificatePath = $"/uploads/documents/degree-{i}.pdf",
                 MarksheetPath = $"/uploads/documents/marksheet-{i}.pdf",
                 CertificationsPath = hasCert ? $"/uploads/documents/cert-{i}.pdf" : null,
                 VideoPath = hasVideo ? $"/uploads/videos/intro-{i}.mp4" : null,
-                CreatedOn = DateTime.UtcNow.AddDays(-random.Next(1, 360))
+                CreatedOn = DateTime.UtcNow.AddDays(-random.Next(1, 180))
             });
         }
 

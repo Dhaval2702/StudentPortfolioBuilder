@@ -56,10 +56,20 @@ public class HomeController(ApplicationDbContext db) : Controller
             .Take(pageSize)
             .ToListAsync();
 
+        var featuredProfiles = await db.StudentProfiles
+            .AsNoTracking()
+            .OrderByDescending(x => x.HasVideo)
+            .ThenByDescending(x => x.HasCertifications)
+            .ThenByDescending(x => x.CreatedOn)
+            .Take(2)
+            .ToListAsync();
+
         var model = new HomePageViewModel
         {
             Filters = filters,
             Profiles = profiles,
+            FeaturedProfiles = featuredProfiles,
+            BrowseProfiles = profiles.Take(8).ToList(),
             FieldsOfStudy = BuildOptions(HomeLookup.FieldsOfStudy),
             JobRoles = BuildOptions(HomeLookup.JobRoles),
             CurrentPage = page,
@@ -68,6 +78,18 @@ public class HomeController(ApplicationDbContext db) : Controller
         };
 
         return View(model);
+    }
+
+    [HttpGet]
+    public async Task<IActionResult> Profile(int id)
+    {
+        var profile = await db.StudentProfiles.AsNoTracking().FirstOrDefaultAsync(x => x.Id == id);
+        if (profile is null)
+        {
+            return NotFound();
+        }
+
+        return View(profile);
     }
 
     [HttpGet]
@@ -111,7 +133,7 @@ public class HomeController(ApplicationDbContext db) : Controller
         await db.SaveChangesAsync();
 
         TempData["SuccessMessage"] = "Registration completed and profile highlighted on landing page.";
-        return RedirectToAction(nameof(Index));
+        return RedirectToAction(nameof(Profile), new { id = profile.Id });
     }
 
     [HttpGet]

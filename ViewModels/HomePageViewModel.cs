@@ -7,6 +7,8 @@ public class HomePageViewModel
 {
     public ProfileFilterViewModel Filters { get; set; } = new();
     public List<StudentProfile> Profiles { get; set; } = new();
+    public List<StudentProfile> FeaturedProfiles { get; set; } = new();
+    public List<StudentProfile> BrowseProfiles { get; set; } = new();
     public List<SelectListItem> FieldsOfStudy { get; set; } = new();
     public List<SelectListItem> JobRoles { get; set; } = new();
     public int CurrentPage { get; set; } = 1;
